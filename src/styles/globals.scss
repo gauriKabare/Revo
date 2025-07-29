@@ -1,0 +1,209 @@
+@import 'variables';
+@import 'mixins';
+
+// Modern CSS Reset
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: $font-family;
+  font-size: $font-size-base;
+  line-height: 1.6;
+  color: $text-primary;
+  background-color: #F9FAFB;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Typography
+h1, h2, h3, h4, h5, h6 {
+  font-weight: $font-weight-semibold;
+  line-height: 1.2;
+  margin-bottom: $spacing-md;
+  color: $text-primary;
+}
+
+h1 { font-size: $font-size-4xl; }
+h2 { font-size: $font-size-3xl; }
+h3 { font-size: $font-size-2xl; }
+h4 { font-size: $font-size-xl; }
+h5 { font-size: $font-size-lg; }
+h6 { font-size: $font-size-base; }
+
+p {
+  margin-bottom: $spacing-md;
+  color: $text-secondary;
+}
+
+a {
+  color: $primary-color;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: darken($primary-color, 10%);
+  }
+}
+
+// Common Utility Classes
+.container {
+  @include container;
+}
+
+.btn {
+  &-primary {
+    @include button-primary;
+    padding: $spacing-md $spacing-xl;
+  }
+  
+  &-secondary {
+    @include button-secondary;
+    padding: $spacing-md $spacing-xl;
+  }
+  
+  &-outline {
+    @include button-outline;
+    padding: $spacing-md $spacing-xl;
+  }
+  
+  &-sm {
+    padding: $spacing-sm $spacing-lg;
+    font-size: $font-size-sm;
+  }
+  
+  &-lg {
+    padding: $spacing-lg $spacing-2xl;
+    font-size: $font-size-lg;
+  }
+}
+
+.card {
+  @include card;
+  
+  &-body {
+    @include card-body;
+  }
+}
+
+.form-group {
+  @include form-group;
+}
+
+.form-control {
+  @include input-base;
+}
+
+.text {
+  &-center { text-align: center; }
+  &-left { text-align: left; }
+  &-right { text-align: right; }
+  
+  &-primary { color: $text-primary; }
+  &-secondary { color: $text-secondary; }
+  &-light { color: $text-light; }
+  &-success { color: $success-color; }
+  &-error { color: $error-color; }
+  &-warning { color: $warning-color; }
+}
+
+.bg {
+  &-primary { background-color: $primary-color; }
+  &-secondary { background-color: $secondary-color; }
+  &-white { background-color: white; }
+  &-gray { background-color: #F9FAFB; }
+}
+
+.flex {
+  display: flex;
+  
+  &-center { @include flex-center; }
+  &-between { @include flex-between; }
+  &-start { @include flex-start; }
+  &-column { @include flex-column; }
+}
+
+.grid {
+  display: grid;
+  
+  &-2 { grid-template-columns: repeat(2, 1fr); }
+  &-3 { grid-template-columns: repeat(3, 1fr); }
+  &-4 { grid-template-columns: repeat(4, 1fr); }
+  
+  @include mobile {
+    &-2, &-3, &-4 {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.gap {
+  &-sm { gap: $spacing-sm; }
+  &-md { gap: $spacing-md; }
+  &-lg { gap: $spacing-lg; }
+  &-xl { gap: $spacing-xl; }
+}
+
+.mb {
+  &-sm { margin-bottom: $spacing-sm; }
+  &-md { margin-bottom: $spacing-md; }
+  &-lg { margin-bottom: $spacing-lg; }
+  &-xl { margin-bottom: $spacing-xl; }
+}
+
+.mt {
+  &-sm { margin-top: $spacing-sm; }
+  &-md { margin-top: $spacing-md; }
+  &-lg { margin-top: $spacing-lg; }
+  &-xl { margin-top: $spacing-xl; }
+}
+
+.p {
+  &-sm { padding: $spacing-sm; }
+  &-md { padding: $spacing-md; }
+  &-lg { padding: $spacing-lg; }
+  &-xl { padding: $spacing-xl; }
+}
+
+.rounded {
+  &-sm { border-radius: $border-radius-sm; }
+  &-md { border-radius: $border-radius-md; }
+  &-lg { border-radius: $border-radius-lg; }
+  &-xl { border-radius: $border-radius-xl; }
+  &-full { border-radius: 50%; }
+}
+
+.shadow {
+  &-sm { box-shadow: $shadow-sm; }
+  &-md { box-shadow: $shadow-md; }
+  &-lg { box-shadow: $shadow-lg; }
+  &-xl { box-shadow: $shadow-xl; }
+}
+
+// Animation Classes
+.fade-in {
+  @include fade-in;
+}
+
+.slide-in-right {
+  @include slide-in-right;
+}
+
+// Hide/Show on Mobile
+@include mobile {
+  .hide-mobile { display: none !important; }
+}
+
+@include desktop {
+  .hide-desktop { display: none !important; }
+  .show-mobile-only { display: none !important; }
+} 

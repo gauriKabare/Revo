@@ -1,70 +1,187 @@
-# Getting Started with Create React App
+# Vehicle Rental Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, full-stack vehicle rental management application built with React, TypeScript, Node.js, and Express.js. Features a clean, responsive UI with modern design and comprehensive rental management capabilities.
 
-## Available Scripts
+## 🚀 Features
 
-In the project directory, you can run:
+### Frontend
+- **Modern React App** with TypeScript and responsive design
+- **Authentication System** with login and registration
+- **Dashboard** with business statistics and quick actions
+- **Vehicle Catalogue** with filtering by bikes/cars
+- **Vehicle Management** - Add, view, and manage vehicles
+- **Rental System** - Complete rental workflow with customer details
+- **Profile Management** - User profile and account information
+- **Mobile-First Design** - Fully responsive across all devices
 
-### `npm start`
+### Backend
+- **RESTful API** with Express.js
+- **Data Validation** using Joi middleware
+- **User Authentication** with bcrypt password hashing
+- **JSON File Storage** for development (easily replaceable with database)
+- **Complete API Endpoints** for all functionality
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Design
+- **Modern UI/UX** with minimalistic modern-inspired theme
+- **Sass Styling** with organized architecture
+- **Component-Based** reusable UI components
+- **Purple, Black, White** color palette
+- **Smooth Animations** and transitions
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📱 Pages & Features
 
-### `npm test`
+1. **Login/Register** - Secure authentication with form validation
+2. **Dashboard** - Overview with stats and navigation cards
+3. **Profile** - User account information and settings
+4. **Catalogue** - Browse vehicles with filtering options
+5. **Vehicle Detail** - Detailed view with rental options
+6. **Add Vehicle** - Form to add new vehicles to inventory
+7. **Vehicles On Rent** - Manage currently rented vehicles
+8. **Vehicles Available** - View and rent available vehicles
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🛠️ Tech Stack
 
-### `npm run build`
+### Frontend
+- React 18
+- TypeScript
+- React Router
+- Sass/SCSS
+- Context API for state management
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Backend
+- Node.js
+- Express.js
+- Joi for validation
+- bcryptjs for password hashing
+- UUID for unique IDs
+- JSON file storage
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🚀 Getting Started
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
 
-### `npm run eject`
+### Installation
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd vehicle-rental-app
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+3. **Start the application**
+   ```bash
+   npm run dev
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   This will start both the frontend (React) and backend (Express) servers concurrently:
+   - Frontend: http://localhost:3000
+   - Backend: http://localhost:5000
 
-## Learn More
+### Default Login Credentials
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Admin Account:**
+- Username: `admin`
+- Password: `password123`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Test User:**
+- Username: `testuser`
+- Password: `password123`
 
-### Code Splitting
+## 📁 Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```
+src/
+├── components/
+│   ├── Auth/           # Login and authentication
+│   ├── Dashboard/      # Dashboard with stats
+│   ├── Profile/        # User profile management
+│   ├── Catalogue/      # Vehicle catalogue and details
+│   ├── Vehicles/       # Vehicle management pages
+│   ├── Layout/         # Navigation and layout
+│   └── common/         # Reusable components
+├── contexts/           # React Context providers
+├── services/           # API service layer
+├── styles/             # Sass styling system
+└── types/              # TypeScript type definitions
 
-### Analyzing the Bundle Size
+backend/
+├── data/               # JSON data files
+├── middleware/         # Validation middleware
+└── server.js           # Express server
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🔧 API Endpoints
 
-### Making a Progressive Web App
+### Authentication
+- `POST /api/auth/signin` - User login
+- `POST /api/auth/create-user` - User registration
+- `POST /api/auth/signout` - User logout
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Vehicles
+- `GET /api/products` - Get all vehicles
+- `POST /api/add-product` - Add new vehicle
+- `GET /api/availability/:id` - Check vehicle availability
 
-### Advanced Configuration
+### Rentals
+- `POST /api/rent-now` - Rent a vehicle
+- `PUT /api/update-rental` - Update rental information
+- `POST /api/make-available` - Return a vehicle
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### User
+- `GET /api/owner/:username` - Get user profile
 
-### Deployment
+## 🎨 Design System
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Colors
+- **Primary**: #6B46C1 (Purple)
+- **Secondary**: #000000 (Black)
+- **Background**: #FFFFFF (White)
+- **Success**: #10B981
+- **Error**: #EF4444
 
-### `npm run build` fails to minify
+### Typography
+- **Font Family**: Inter
+- **Weights**: 300, 400, 500, 600, 700
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 📱 Responsive Design
+
+- **Mobile**: < 768px
+- **Tablet**: 768px - 1024px
+- **Desktop**: > 1024px
+
+## 🔮 Future Enhancements
+
+- Database integration (MongoDB/PostgreSQL)
+- Payment gateway integration
+- SMS/Email notifications
+- Advanced filtering and search
+- Reports and analytics
+- Multi-language support
+- Dark mode theme
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 📞 Support
+
+For support or questions, please contact the development team.
+
+---
+
+**Built with ❤️ for modern vehicle rental management**

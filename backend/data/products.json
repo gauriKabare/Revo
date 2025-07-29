@@ -1,0 +1,150 @@
+{
+  "bikes": [
+    {
+      "id": "bike-001",
+      "photos": [
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?w=500&h=300&fit=crop"
+      ],
+      "name": "Royal Enfield Classic 350",
+      "model": "Classic 350",
+      "type": "bike",
+      "availability": "available",
+      "manufacturingYear": 2023,
+      "rate": 800,
+      "status": "available",
+      "isRentedFlag": false,
+      "createdDate": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "bike-002",
+      "photos": [
+        "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=500&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=500&h=300&fit=crop"
+      ],
+      "name": "Honda CB Shine",
+      "model": "CB Shine SP",
+      "type": "bike",
+      "availability": "rented",
+      "manufacturingYear": 2022,
+      "rate": 600,
+      "status": "rented",
+      "isRentedFlag": true,
+      "rentalInfo": {
+        "customerName": "Rahul Sharma",
+        "customerNumber": "9876543210",
+        "customerPAN": "ABCDE1234F",
+        "customerAadhar": "123456789012",
+        "fromDate": "2024-01-15",
+        "toDate": "2024-01-20",
+        "totalPaid": 1500,
+        "totalDue": 3000
+      },
+      "createdDate": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "bike-003",
+      "photos": [
+        "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=500&h=300&fit=crop"
+      ],
+      "name": "TVS Apache RTR 160",
+      "model": "Apache RTR 160 4V",
+      "type": "bike",
+      "availability": "available",
+      "manufacturingYear": 2023,
+      "rate": 700,
+      "status": "available",
+      "isRentedFlag": false,
+      "createdDate": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "bike-004",
+      "photos": [
+        "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=300&fit=crop"
+      ],
+      "name": "Bajaj Pulsar NS200",
+      "model": "Pulsar NS200",
+      "type": "bike",
+      "availability": "available",
+      "manufacturingYear": 2022,
+      "rate": 750,
+      "status": "available",
+      "isRentedFlag": false,
+      "createdDate": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "cars": [
+    {
+      "id": "car-001",
+      "photos": [
+        "https://images.unsplash.com/photo-1549924231-f129b911e442?w=500&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1502877338535-766e1452684a?w=500&h=300&fit=crop"
+      ],
+      "name": "Maruti Suzuki Swift",
+      "model": "Swift VXI",
+      "type": "car",
+      "availability": "available",
+      "manufacturingYear": 2023,
+      "rate": 2500,
+      "status": "available",
+      "isRentedFlag": false,
+      "createdDate": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "car-002",
+      "photos": [
+        "https://images.unsplash.com/photo-1550355291-bbee04a92027?w=500&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=500&h=300&fit=crop"
+      ],
+      "name": "Hyundai i20",
+      "model": "i20 Sportz",
+      "type": "car",
+      "availability": "rented",
+      "manufacturingYear": 2022,
+      "rate": 2800,
+      "status": "rented",
+      "isRentedFlag": true,
+      "rentalInfo": {
+        "customerName": "Priya Singh",
+        "customerNumber": "9876543211",
+        "customerPAN": "FGHIJ5678K",
+        "customerAadhar": "987654321098",
+        "fromDate": "2024-01-10",
+        "toDate": "2024-01-18",
+        "totalPaid": 10000,
+        "totalDue": 22400
+      },
+      "createdDate": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "car-003",
+      "photos": [
+        "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=500&h=300&fit=crop"
+      ],
+      "name": "Tata Nexon",
+      "model": "Nexon XZ Plus",
+      "type": "car",
+      "availability": "available",
+      "manufacturingYear": 2023,
+      "rate": 3200,
+      "status": "available",
+      "isRentedFlag": false,
+      "createdDate": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "car-004",
+      "photos": [
+        "https://images.unsplash.com/photo-1562911791-c7a97b729ec5?w=500&h=300&fit=crop"
+      ],
+      "name": "Honda City",
+      "model": "City ZX CVT",
+      "type": "car",
+      "availability": "available",
+      "manufacturingYear": 2023,
+      "rate": 3500,
+      "status": "available",
+      "isRentedFlag": false,
+      "createdDate": "2024-01-01T00:00:00.000Z"
+    }
+  ]
+} 
