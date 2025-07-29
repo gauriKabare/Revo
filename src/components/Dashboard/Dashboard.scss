@@ -1,0 +1,220 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  margin-bottom: $spacing-2xl;
+  text-align: center;
+  
+  h2 {
+    font-size: $font-size-3xl;
+    margin-bottom: $spacing-md;
+    color: $text-primary;
+  }
+  
+  p {
+    font-size: $font-size-lg;
+    color: $text-secondary;
+    margin: 0;
+  }
+}
+
+// Stats Grid
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $spacing-lg;
+  margin-bottom: $spacing-2xl;
+  
+  @include mobile {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-md;
+  }
+}
+
+.stat-card {
+  @include card;
+  padding: $spacing-xl;
+  @include flex-start;
+  gap: $spacing-lg;
+  
+  @include mobile {
+    padding: $spacing-lg;
+    @include flex-column;
+    text-align: center;
+    gap: $spacing-md;
+  }
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  
+  @include mobile {
+    font-size: 2rem;
+  }
+}
+
+.stat-content {
+  @include flex-column;
+  gap: $spacing-xs;
+}
+
+.stat-number {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  color: $primary-color;
+  
+  @include mobile {
+    font-size: $font-size-2xl;
+  }
+}
+
+.stat-label {
+  font-size: $font-size-sm;
+  color: $text-secondary;
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+// Dashboard Grid
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $spacing-xl;
+  margin-bottom: $spacing-2xl;
+  
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: $spacing-lg;
+  }
+}
+
+.dashboard-card {
+  @include card;
+  padding: $spacing-xl;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+  min-height: 200px;
+  @include flex-column;
+  justify-content: space-between;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, currentColor, transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  &:hover {
+    &::before {
+      opacity: 1;
+    }
+    
+    .card-arrow {
+      transform: translateX(5px);
+    }
+  }
+  
+  // Color variants
+  &.dashboard-card-blue {
+    border-left: 4px solid $info-color;
+    &::before { background: $info-color; }
+  }
+  
+  &.dashboard-card-green {
+    border-left: 4px solid $success-color;
+    &::before { background: $success-color; }
+  }
+  
+  &.dashboard-card-orange {
+    border-left: 4px solid $warning-color;
+    &::before { background: $warning-color; }
+  }
+  
+  &.dashboard-card-purple {
+    border-left: 4px solid $primary-color;
+    &::before { background: $primary-color; }
+  }
+}
+
+.card-header {
+  @include flex-start;
+  gap: $spacing-lg;
+  margin-bottom: $spacing-md;
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  
+  @include mobile {
+    font-size: 2rem;
+  }
+}
+
+.card-title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $text-primary;
+  margin: 0;
+}
+
+.card-description {
+  color: $text-secondary;
+  margin-bottom: $spacing-lg;
+  line-height: 1.5;
+}
+
+.card-stats {
+  font-size: $font-size-sm;
+  color: $text-light;
+  font-weight: $font-weight-medium;
+  margin-bottom: $spacing-md;
+}
+
+.card-arrow {
+  position: absolute;
+  bottom: $spacing-lg;
+  right: $spacing-lg;
+  font-size: $font-size-xl;
+  color: $primary-color;
+  transition: transform 0.3s ease;
+}
+
+// Quick Actions
+.quick-actions {
+  @include card;
+  padding: $spacing-xl;
+  text-align: center;
+  
+  h3 {
+    margin-bottom: $spacing-lg;
+    color: $text-primary;
+  }
+}
+
+.action-buttons {
+  @include flex-center;
+  gap: $spacing-lg;
+  flex-wrap: wrap;
+  
+  @include mobile {
+    @include flex-column;
+    gap: $spacing-md;
+    
+    .btn {
+      width: 100%;
+    }
+  }
+} 

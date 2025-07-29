@@ -1,0 +1,262 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.profile {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.profile-container {
+  @include flex-column;
+  gap: $spacing-xl;
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: $spacing-lg;
+  
+  h2 {
+    font-size: $font-size-3xl;
+    margin-bottom: $spacing-sm;
+    color: $text-primary;
+  }
+  
+  p {
+    color: $text-secondary;
+    font-size: $font-size-lg;
+    margin: 0;
+  }
+}
+
+.profile-content {
+  @include flex-column;
+  gap: $spacing-xl;
+}
+
+// Loading and Error States
+.loading-container,
+.error-container {
+  @include card;
+  padding: $spacing-3xl;
+  text-align: center;
+  
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #E5E7EB;
+    border-top: 4px solid $primary-color;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto $spacing-lg;
+  }
+  
+  .error-icon {
+    font-size: 3rem;
+    margin-bottom: $spacing-lg;
+  }
+  
+  h3 {
+    color: $text-primary;
+    margin-bottom: $spacing-md;
+  }
+  
+  p {
+    color: $text-secondary;
+    margin: 0;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Profile Card
+.profile-card {
+  @include card;
+  padding: $spacing-2xl;
+  
+  @include mobile {
+    padding: $spacing-xl;
+  }
+}
+
+.profile-avatar-section {
+  @include flex-start;
+  gap: $spacing-xl;
+  margin-bottom: $spacing-2xl;
+  padding-bottom: $spacing-xl;
+  border-bottom: 1px solid #E5E7EB;
+  
+  @include mobile {
+    @include flex-column;
+    text-align: center;
+    gap: $spacing-lg;
+  }
+}
+
+.profile-avatar {
+  position: relative;
+  
+  img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: $shadow-lg;
+    
+    @include mobile {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}
+
+.avatar-info {
+  @include flex-column;
+  gap: $spacing-sm;
+  
+  h3 {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    margin: 0;
+  }
+  
+  p {
+    color: $text-secondary;
+    font-size: $font-size-lg;
+    margin: 0;
+  }
+}
+
+// Profile Details
+.profile-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $spacing-xl;
+  
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: $spacing-lg;
+  }
+}
+
+.detail-group {
+  @include flex-column;
+  gap: $spacing-sm;
+  
+  label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.detail-value {
+  @include flex-start;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  background: #F9FAFB;
+  border-radius: $border-radius-md;
+  border: 1px solid #E5E7EB;
+  
+  .detail-icon {
+    font-size: $font-size-lg;
+  }
+  
+  span:last-child {
+    font-weight: $font-weight-medium;
+    color: $text-primary;
+  }
+}
+
+// Profile Actions
+.profile-actions {
+  @include flex-center;
+  gap: $spacing-lg;
+  flex-wrap: wrap;
+  
+  @include mobile {
+    @include flex-column;
+    
+    .btn {
+      width: 100%;
+    }
+  }
+}
+
+// Profile Stats
+.profile-stats {
+  @include card;
+  padding: $spacing-xl;
+  
+  h3 {
+    text-align: center;
+    margin-bottom: $spacing-xl;
+    color: $text-primary;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: $spacing-lg;
+    
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.stat-item {
+  @include flex-start;
+  gap: $spacing-lg;
+  padding: $spacing-lg;
+  background: #F9FAFB;
+  border-radius: $border-radius-lg;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: white;
+    box-shadow: $shadow-md;
+  }
+  
+  @include mobile {
+    @include flex-center;
+    text-align: center;
+    @include flex-column;
+    gap: $spacing-md;
+  }
+}
+
+.stat-icon {
+  font-size: 2rem;
+  
+  @include mobile {
+    font-size: 1.5rem;
+  }
+}
+
+.stat-info {
+  @include flex-column;
+  gap: $spacing-xs;
+  
+  .stat-number {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $primary-color;
+    
+    @include mobile {
+      font-size: $font-size-xl;
+    }
+  }
+  
+  .stat-label {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    font-weight: $font-weight-medium;
+  }
+} 

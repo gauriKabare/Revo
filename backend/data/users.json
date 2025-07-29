@@ -1,0 +1,29 @@
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "username": "admin",
+    "email": "admin@vehiclerental.com",
+    "mobileNumber": "9876543210",
+    "password": "$2a$10$X8qNZ1XOkKkE9QfqQZj9qeK1ZmYOD.RP6gZz1kXjTjC9nG4.eWJeC",
+    "profilePhoto": null,
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440001",
+    "username": "testuser",
+    "email": "test@example.com",
+    "mobileNumber": "9876543211",
+    "password": "$2a$10$6XViRoP3YwjQ8fNgGQZJGeZnFQr8xVl9EjqD4NZ6YH8G7sJ9fKlGG",
+    "profilePhoto": null,
+    "createdAt": "2024-01-15T00:00:00.000Z"
+  },
+  {
+    "id": "eee9eb33-6be5-4f6e-8e9c-dadf564eba37",
+    "username": "revouser1",
+    "email": "revouser@mail.com",
+    "mobileNumber": "9359342011",
+    "password": "$2a$10$TEreTnvJ.X0gbxc.23IZ/uovx8LtZtvelEefQzLSBd7roJ1IOITj.",
+    "profilePhoto": null,
+    "createdAt": "2025-07-29T11:55:30.247Z"
+  }
+]
