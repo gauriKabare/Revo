@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { authAPI } from '../../services/api';
 import { CreateAccountData } from '../../types';
@@ -6,6 +7,7 @@ import RevoLogo from '../common/RevoLogo';
 import './Login.scss';
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -222,10 +224,14 @@ const Login: React.FC = () => {
                 </button>
 
                 <div className="login-links">
-                  <a href="#" className="forgot-password">
+                  <button
+                    type="button"
+                    className="forgot-password"
+                    onClick={() => navigate('/forgot-password')}
+                  >
                     <span>Forgot Password?</span>
                     <div className="link-underline"></div>
-                  </a>
+                  </button>
                 </div>
               </form>
             ) : (

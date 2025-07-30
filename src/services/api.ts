@@ -6,7 +6,10 @@ import {
   OwnerResponse,
   RentNowFormData,
   AddVehicleFormData,
-  UpdateRentalFormData
+  UpdateRentalFormData,
+  ForgotPasswordPhoneData,
+  ForgotPasswordOTPData,
+  UpdateUserPasswordData
 } from '../types';
 
 const API_BASE_URL = 'http://localhost:5000/api';
@@ -102,6 +105,30 @@ export const authAPI = {
     return apiCall('/add-product', {
       method: 'POST',
       body: JSON.stringify(productData),
+    });
+  },
+
+  // 11. Forgot Password - Verify Phone Number
+  verifyPhoneNumber: async (phoneData: ForgotPasswordPhoneData): Promise<ApiResponse> => {
+    return apiCall('/auth/forgot-password/verify-phone', {
+      method: 'POST',
+      body: JSON.stringify(phoneData),
+    });
+  },
+
+  // 12. Forgot Password - Verify OTP
+  verifyOTP: async (otpData: ForgotPasswordOTPData): Promise<ApiResponse> => {
+    return apiCall('/auth/forgot-password/verify-otp', {
+      method: 'POST',
+      body: JSON.stringify(otpData),
+    });
+  },
+
+  // 13. Update User Password
+  updateUser: async (updateData: UpdateUserPasswordData): Promise<ApiResponse> => {
+    return apiCall('/auth/update-user', {
+      method: 'PUT',
+      body: JSON.stringify(updateData),
     });
   },
 }; 

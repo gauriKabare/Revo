@@ -122,9 +122,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Use useCallback to prevent function recreation on every render
   const refreshProducts = useCallback(async () => {
     try {
+      console.log('Refreshing products...');
       const response = await authAPI.getProducts();
+      console.log('Products response:', response);
+      
       if (response.status === 'success') {
-        setProductsState(response.data || null);
+        const newProducts = response.data || { bikes: [], cars: [] };
+        console.log('Setting new products:', newProducts);
+        
+        setProductsState(newProducts);
         
         // Update session storage
         const existingSession = sessionStorage.getItem('vehicleRentalSession');
@@ -132,11 +138,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const currentSessionData = JSON.parse(existingSession);
           const updatedSessionData = {
             ...currentSessionData,
-            products: response.data
+            products: newProducts
           };
           setSessionData(updatedSessionData);
           sessionStorage.setItem('vehicleRentalSession', JSON.stringify(updatedSessionData));
+          console.log('Updated session data:', updatedSessionData);
         }
+      } else {
+        console.error('Failed to refresh products:', response.message);
       }
     } catch (error) {
       console.error('Error refreshing products:', error);

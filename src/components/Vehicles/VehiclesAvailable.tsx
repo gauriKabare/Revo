@@ -1,17 +1,37 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import VehicleAccordion from '../common/VehicleAccordion';
 import './VehiclesAvailable.scss';
 
+type FilterType = 'all' | 'bikes' | 'cars';
+
 const VehiclesAvailable: React.FC = () => {
-  const { sessionData } = useAuth();
+  const { sessionData, products } = useAuth();
+  const [activeFilter, setActiveFilter] = useState<FilterType>('all');
 
   const availableVehicles = useMemo(() => {
-    if (!sessionData) return [];
+    // Use products first, fallback to sessionData if products not available
+    const productData = products || sessionData?.products;
+    if (!productData) return [];
     
-    const allVehicles = [...sessionData.products.bikes, ...sessionData.products.cars];
-    return allVehicles.filter(vehicle => vehicle.status === 'available' && !vehicle.isRentedFlag);
-  }, [sessionData]);
+    const allVehicles = [...productData.bikes, ...productData.cars];
+    console.log('All vehicles in VehiclesAvailable:', allVehicles.length);
+    const available = allVehicles.filter(vehicle => vehicle.status === 'available' && !vehicle.isRentedFlag);
+    console.log('Available vehicles:', available.length);
+    return available;
+  }, [sessionData, products]);
+
+  const filteredVehicles = useMemo(() => {
+    switch (activeFilter) {
+      case 'bikes':
+        return availableVehicles.filter(vehicle => vehicle.type === 'bike');
+      case 'cars':
+        return availableVehicles.filter(vehicle => vehicle.type === 'car');
+      case 'all':
+      default:
+        return availableVehicles;
+    }
+  }, [availableVehicles, activeFilter]);
 
   const calculateStats = () => {
     const totalAvailable = availableVehicles.length;
@@ -34,6 +54,10 @@ const VehiclesAvailable: React.FC = () => {
   };
 
   const stats = calculateStats();
+
+  const handleFilterChange = (filter: FilterType) => {
+    setActiveFilter(filter);
+  };
 
   return (
     <div className="vehicles-available">
@@ -80,13 +104,22 @@ const VehiclesAvailable: React.FC = () => {
       {/* Filter Tabs */}
       <div className="filter-section">
         <div className="filter-tabs">
-          <button className="filter-tab active">
+          <button 
+            className={`filter-tab ${activeFilter === 'all' ? 'active' : ''}`}
+            onClick={() => handleFilterChange('all')}
+          >
             All ({stats.totalAvailable})
           </button>
-          <button className="filter-tab">
+          <button 
+            className={`filter-tab ${activeFilter === 'bikes' ? 'active' : ''}`}
+            onClick={() => handleFilterChange('bikes')}
+          >
             Bikes ({stats.availableBikes})
           </button>
-          <button className="filter-tab">
+          <button 
+            className={`filter-tab ${activeFilter === 'cars' ? 'active' : ''}`}
+            onClick={() => handleFilterChange('cars')}
+          >
             Cars ({stats.availableCars})
           </button>
         </div>
@@ -95,32 +128,52 @@ const VehiclesAvailable: React.FC = () => {
       {/* Vehicles List */}
       <div className="vehicles-section">
         <div className="section-header">
-          <h2>Available Vehicles</h2>
-          <p>Sorted by date added (ascending) • Click to expand details</p>
+          <h2>
+            {activeFilter === 'all' ? 'Available Vehicles' : 
+             activeFilter === 'bikes' ? 'Available Bikes' : 'Available Cars'}
+             {' '}({filteredVehicles.length})
+          </h2>
+          <p>
+            {activeFilter !== 'all' ? `Showing ${activeFilter} only • ` : ''}
+            Sorted by date added (ascending) • Click to expand details
+          </p>
         </div>
 
-        {availableVehicles.length > 0 ? (
+        {filteredVehicles.length > 0 ? (
           <VehicleAccordion
-            vehicles={availableVehicles}
+            vehicles={filteredVehicles}
             showRentButton={true}
             sortBy="createdDate"
           />
         ) : (
           <div className="empty-state">
             <div className="empty-icon">📋</div>
-            <h3>No Available Vehicles</h3>
-            <p>All vehicles are currently rented out. Add new vehicles or wait for returns to see available options.</p>
+            <h3>
+              {activeFilter === 'all' ? 'No Available Vehicles' :
+               activeFilter === 'bikes' ? 'No Available Bikes' : 'No Available Cars'}
+            </h3>
+            <p>
+              {activeFilter === 'all' 
+                ? 'All vehicles are currently rented out. Add new vehicles or wait for returns to see available options.'
+                : `No ${activeFilter} are currently available. Try filtering by "All" to see other vehicle types or add new ${activeFilter} to your fleet.`
+              }
+            </p>
           </div>
         )}
       </div>
 
       {/* Quick Actions */}
-      {availableVehicles.length > 0 && (
+      {filteredVehicles.length > 0 && (
         <div className="quick-actions">
           <div className="action-card">
             <div className="action-content">
               <h4>Ready for Business</h4>
-              <p>You have {stats.totalAvailable} vehicles ready to rent. Great availability rate of {stats.availabilityRate}%!</p>
+              <p>
+                {activeFilter === 'all' 
+                  ? `You have ${stats.totalAvailable} vehicles ready to rent. Great availability rate of ${stats.availabilityRate}%!`
+                  : `You have ${filteredVehicles.length} ${activeFilter} ready to rent out of ${stats.totalAvailable} total available vehicles.`
+                }
+              </p>
             </div>
             <div className="action-icon">✅</div>
           </div>

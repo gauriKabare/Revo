@@ -94,16 +94,35 @@
         color: $text-secondary;
         cursor: pointer;
         transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
 
-        &:hover {
+        &:hover:not(.active) {
           background: rgba(255, 255, 255, 0.1);
           color: $primary-color;
+          transform: translateY(-1px);
         }
 
         &.active {
           background: $primary-color;
           color: $text-primary;
-          box-shadow: $shadow-sm;
+          box-shadow: $shadow-sm, $glow-primary;
+          transform: translateY(-1px);
+
+          &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 1s ease-in-out;
+          }
+        }
+
+        &:active {
+          transform: translateY(0);
         }
       }
     }
@@ -111,6 +130,11 @@
 
   .vehicles-section {
     margin-bottom: $spacing-3xl;
+    
+    // Smooth transition when filter changes
+    .vehicle-accordion {
+      animation: fadeInUp 0.4s ease-out;
+    }
 
     .section-header {
       margin-bottom: $spacing-xl;
@@ -238,6 +262,27 @@
         }
       }
     }
+  }
+}
+
+// Animations
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
