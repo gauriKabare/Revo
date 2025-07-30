@@ -25,5 +25,14 @@
     "password": "$2a$10$TEreTnvJ.X0gbxc.23IZ/uovx8LtZtvelEefQzLSBd7roJ1IOITj.",
     "profilePhoto": null,
     "createdAt": "2025-07-29T11:55:30.247Z"
+  },
+  {
+    "id": "334e4980-f374-4a67-a44a-f8bbcc00e2c3",
+    "username": "gaurik",
+    "email": "gauri@mail.com",
+    "mobileNumber": "9898786755",
+    "password": "$2a$10$Y6evlPD06zUXxfhXYIBNE.yCa50Ndn8woHr.L3R5REqByYnDr9B66",
+    "profilePhoto": null,
+    "createdAt": "2025-07-29T14:48:17.400Z"
   }
 ]

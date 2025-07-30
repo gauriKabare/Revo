@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { Vehicle } from '../../types';
@@ -21,11 +21,17 @@ const Dashboard: React.FC = () => {
     totalBikes: 0,
     totalCars: 0,
   });
+  
+  // Use ref to track if we've already fetched products on mount
+  const hasInitialized = useRef(false);
 
   useEffect(() => {
-    // Refresh products on component mount
-    refreshProducts();
-  }, [refreshProducts]);
+    // Only refresh products once on component mount if we don't already have products
+    if (!hasInitialized.current && !products) {
+      hasInitialized.current = true;
+      refreshProducts();
+    }
+  }, []); // Empty dependency array - only run on mount
 
   useEffect(() => {
     if (products) {

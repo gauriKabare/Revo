@@ -4,7 +4,7 @@
 .layout {
   display: flex;
   min-height: 100vh;
-  background-color: #F9FAFB;
+  background-color: $background-color;
 }
 
 // Mobile Menu Button
@@ -13,8 +13,8 @@
   top: $spacing-lg;
   left: $spacing-lg;
   z-index: $z-fixed;
-  background: white;
-  border: none;
+  background: $surface-color;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: $border-radius-md;
   padding: $spacing-md;
   box-shadow: $shadow-md;
@@ -37,7 +37,7 @@
 // Sidebar
 .sidebar {
   width: 280px;
-  background: white;
+  background: $surface-color;
   box-shadow: $shadow-lg;
   @include flex-column;
   position: fixed;
@@ -60,7 +60,7 @@
 
 .sidebar-header {
   padding: $spacing-xl $spacing-lg;
-  border-bottom: 1px solid #E5E7EB;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   @include flex-between;
   
   .sidebar-title {
@@ -99,7 +99,7 @@
   border-left: 3px solid transparent;
   
   &:hover {
-    background: #F9FAFB;
+    background: rgba(255, 255, 255, 0.05);
     color: $primary-color;
   }
   
@@ -126,7 +126,7 @@
 
 .sidebar-footer {
   padding: $spacing-lg;
-  border-top: 1px solid #E5E7EB;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .logout-btn {
@@ -170,8 +170,8 @@
 }
 
 .main-header {
-  background: white;
-  border-bottom: 1px solid #E5E7EB;
+  background: $surface-color;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: $spacing-lg $spacing-xl;
   
   @include mobile {

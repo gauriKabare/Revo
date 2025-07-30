@@ -1,0 +1,232 @@
+@import '../../styles/variables';
+
+.revo-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+
+  .logo-container {
+    position: relative;
+    display: inline-block;
+
+    .logo-text {
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+
+      .letter {
+        font-family: $font-family;
+        font-weight: $font-weight-extrabold;
+        background: $primary-gradient;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        transition: all $duration-normal ease;
+
+        &::before {
+          content: attr(data-letter);
+          position: absolute;
+          top: 0;
+          left: 0;
+          background: $primary-gradient;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          filter: blur(2px);
+          opacity: 0;
+          transition: opacity $duration-normal ease;
+        }
+      }
+    }
+
+    .logo-underline {
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: $primary-gradient;
+      border-radius: 2px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform $duration-slow ease;
+    }
+
+    .logo-glow {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity $duration-normal ease;
+    }
+  }
+
+  .logo-tagline {
+    font-size: 0.65em;
+    color: $text-secondary;
+    margin-top: $spacing-xs;
+    font-weight: $font-weight-medium;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.8;
+    transition: all $duration-normal ease;
+  }
+
+  // Size Variants
+  &.revo-logo-sm {
+    .logo-text .letter {
+      font-size: 1.5rem;
+      margin-right: 1px;
+    }
+  }
+
+  &.revo-logo-md {
+    .logo-text .letter {
+      font-size: 2.5rem;
+      margin-right: 2px;
+    }
+  }
+
+  &.revo-logo-lg {
+    .logo-text .letter {
+      font-size: 3.5rem;
+      margin-right: 3px;
+    }
+  }
+
+  &.revo-logo-xl {
+    .logo-text .letter {
+      font-size: 5rem;
+      margin-right: 4px;
+    }
+  }
+
+  // Animation States
+  &.animated {
+    .logo-container {
+      &:hover {
+        .logo-underline {
+          transform: scaleX(1);
+        }
+
+        .logo-glow {
+          opacity: 1;
+        }
+
+        .letter {
+          transform: translateY(-2px);
+          
+          &::before {
+            opacity: 0.3;
+          }
+        }
+      }
+    }
+
+    .letter {
+      &.letter-r {
+        animation: letterPulse 2s ease-in-out infinite;
+        animation-delay: 0s;
+      }
+
+      &.letter-e {
+        animation: letterPulse 2s ease-in-out infinite;
+        animation-delay: 0.2s;
+      }
+
+      &.letter-v {
+        animation: letterPulse 2s ease-in-out infinite;
+        animation-delay: 0.4s;
+      }
+
+      &.letter-o {
+        animation: letterPulse 2s ease-in-out infinite;
+        animation-delay: 0.6s;
+      }
+    }
+
+    // Continuous glow animation
+    .logo-glow {
+      animation: logoGlow 3s ease-in-out infinite alternate;
+    }
+  }
+}
+
+// Keyframe Animations
+@keyframes letterPulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+  }
+}
+
+@keyframes logoGlow {
+  0% {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(1.1);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: $breakpoint-md) {
+  .revo-logo {
+    &.revo-logo-lg {
+      .logo-text .letter {
+        font-size: 2.5rem;
+        margin-right: 2px;
+      }
+    }
+
+    &.revo-logo-xl {
+      .logo-text .letter {
+        font-size: 3.5rem;
+        margin-right: 3px;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .revo-logo {
+    &.revo-logo-md {
+      .logo-text .letter {
+        font-size: 2rem;
+        margin-right: 1px;
+      }
+    }
+
+    &.revo-logo-lg {
+      .logo-text .letter {
+        font-size: 2.25rem;
+        margin-right: 2px;
+      }
+    }
+
+    &.revo-logo-xl {
+      .logo-text .letter {
+        font-size: 2.75rem;
+        margin-right: 2px;
+      }
+    }
+
+    .logo-tagline {
+      font-size: 0.55em;
+      letter-spacing: 1px;
+    }
+  }
+} 
