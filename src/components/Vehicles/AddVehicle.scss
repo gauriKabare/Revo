@@ -1,0 +1,352 @@
+@import '../../styles/variables';
+
+.add-vehicle-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacing-lg;
+
+  .page-header {
+    text-align: center;
+    margin-bottom: $spacing-3xl;
+
+    h1 {
+      font-size: $font-size-4xl;
+      font-weight: $font-weight-bold;
+      color: $text-primary;
+      margin: 0 0 $spacing-md 0;
+    }
+
+    p {
+      font-size: $font-size-lg;
+      color: $text-secondary;
+      margin: 0;
+    }
+  }
+
+  .page-content {
+    display: flex;
+    justify-content: center;
+
+    .add-vehicle-trigger {
+      padding: $spacing-lg $spacing-2xl;
+      font-size: $font-size-xl;
+      border-radius: $border-radius-lg;
+      background: $primary-gradient;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: $font-weight-semibold;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: $shadow-xl;
+      }
+    }
+  }
+}
+
+.add-vehicle-modal {
+  max-width: 900px;
+  width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  .modal-header {
+    padding: $spacing-lg;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      margin: 0;
+      color: $text-primary;
+      font-size: $font-size-xl;
+      font-weight: $font-weight-semibold;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: $font-size-2xl;
+      cursor: pointer;
+      color: $text-secondary;
+      padding: $spacing-xs;
+      border-radius: $border-radius-sm;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba($error-color, 0.1);
+        color: $error-color;
+      }
+    }
+  }
+
+  .modal-body {
+    padding: $spacing-lg;
+
+    .message {
+      padding: $spacing-sm $spacing-md;
+      border-radius: $border-radius-md;
+      margin-bottom: $spacing-lg;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+
+      &.message-success {
+        background: rgba($success-color, 0.1);
+        color: $success-color;
+        border: 1px solid rgba($success-color, 0.3);
+      }
+
+      &.message-error {
+        background: rgba($error-color, 0.1);
+        color: $error-color;
+        border: 1px solid rgba($error-color, 0.3);
+      }
+    }
+
+    .add-vehicle-form {
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: $spacing-lg;
+        margin-bottom: $spacing-lg;
+
+        @media (max-width: $breakpoint-md) {
+          grid-template-columns: 1fr;
+          gap: $spacing-md;
+        }
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: $spacing-lg;
+
+        label {
+          font-size: $font-size-sm;
+          font-weight: $font-weight-semibold;
+          color: $text-primary;
+          margin-bottom: $spacing-xs;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .form-control {
+          padding: $spacing-sm $spacing-md;
+          border: 1px solid #ddd;
+          border-radius: $border-radius-md;
+          font-size: $font-size-base;
+          transition: all 0.3s ease;
+
+          &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+          }
+
+          &:disabled {
+            background: #f8f9fa;
+            color: $text-secondary;
+            cursor: not-allowed;
+          }
+
+          &.photo-urls-input {
+            min-height: 100px;
+            resize: vertical;
+            font-family: monospace;
+            font-size: $font-size-sm;
+            line-height: 1.5;
+          }
+        }
+
+        .form-text {
+          font-size: $font-size-xs;
+          color: $text-light;
+          margin-top: $spacing-xs;
+        }
+
+        .photo-preview {
+          margin-top: $spacing-md;
+          padding: $spacing-md;
+          background: #f8f9fa;
+          border-radius: $border-radius-md;
+          border: 1px solid #e9ecef;
+
+          h4 {
+            margin: 0 0 $spacing-md 0;
+            font-size: $font-size-base;
+            font-weight: $font-weight-semibold;
+            color: $text-primary;
+          }
+
+          .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: $spacing-sm;
+
+            .photo-item {
+              position: relative;
+              aspect-ratio: 3/2;
+              border-radius: $border-radius-sm;
+              overflow: hidden;
+              background: white;
+              border: 1px solid #ddd;
+
+              img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+              }
+
+              .main-badge {
+                position: absolute;
+                top: $spacing-xs;
+                left: $spacing-xs;
+                background: $primary-color;
+                color: white;
+                padding: 2px $spacing-xs;
+                border-radius: $border-radius-sm;
+                font-size: $font-size-xs;
+                font-weight: $font-weight-semibold;
+              }
+
+              &.more-photos {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #e9ecef;
+                color: $text-secondary;
+                font-weight: $font-weight-medium;
+                font-size: $font-size-sm;
+              }
+            }
+          }
+        }
+      }
+
+      .form-summary {
+        background: #f8f9fa;
+        padding: $spacing-md;
+        border-radius: $border-radius-md;
+        margin-bottom: $spacing-lg;
+        border: 1px solid #e9ecef;
+
+        h4 {
+          margin: 0 0 $spacing-sm 0;
+          font-size: $font-size-base;
+          font-weight: $font-weight-semibold;
+          color: $text-primary;
+        }
+
+        .summary-content {
+          p {
+            margin: $spacing-xs 0;
+            font-size: $font-size-sm;
+            color: $text-secondary;
+
+            &:first-child {
+              font-size: $font-size-base;
+              font-weight: $font-weight-semibold;
+              color: $text-primary;
+            }
+
+            .status-available {
+              color: $success-color;
+              font-weight: $font-weight-semibold;
+            }
+
+            .status-rented {
+              color: $warning-color;
+              font-weight: $font-weight-semibold;
+            }
+          }
+        }
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: $spacing-md;
+        justify-content: flex-end;
+        padding-top: $spacing-lg;
+        border-top: 1px solid #e9ecef;
+
+        .btn {
+          padding: $spacing-sm $spacing-lg;
+          border-radius: $border-radius-md;
+          font-size: $font-size-base;
+          font-weight: $font-weight-medium;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: none;
+          min-width: 120px;
+
+          &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+          }
+
+          &.btn-outline {
+            background: white;
+            color: $text-secondary;
+            border: 1px solid #ddd;
+
+            &:hover:not(:disabled) {
+              background: #f8f9fa;
+              border-color: $primary-color;
+              color: $primary-color;
+            }
+          }
+
+          &.btn-primary {
+            background: $primary-color;
+            color: white;
+
+            &:hover:not(:disabled) {
+              background: darken($primary-color, 10%);
+              transform: translateY(-1px);
+              box-shadow: $shadow-md;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: $breakpoint-md) {
+  .add-vehicle-page {
+    padding: $spacing-md;
+
+    .page-header {
+      h1 {
+        font-size: $font-size-3xl;
+      }
+
+      p {
+        font-size: $font-size-base;
+      }
+    }
+
+    .page-content {
+      .add-vehicle-trigger {
+        padding: $spacing-md $spacing-xl;
+        font-size: $font-size-lg;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .add-vehicle-modal {
+    .modal-actions {
+      flex-direction: column;
+
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+} 

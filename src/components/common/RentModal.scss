@@ -74,7 +74,7 @@
   gap: $spacing-lg;
   margin-bottom: $spacing-xl;
   padding: $spacing-lg;
-  background: #F9FAFB;
+  background: #2A2A2A;
   border-radius: $border-radius-lg;
   
   img {
@@ -192,7 +192,7 @@
   @include flex-center;
   gap: $spacing-lg;
   padding-top: $spacing-lg;
-  border-top: 1px solid #E5E7EB;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   
   @include mobile {
     @include flex-column;

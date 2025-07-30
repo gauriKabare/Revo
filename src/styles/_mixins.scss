@@ -22,49 +22,72 @@
   flex-direction: column;
 }
 
-// Button Mixins
+// Button Mixins (Enhanced for Dark Theme)
 @mixin button-base {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: none;
-  border-radius: $border-radius-md;
+  border-radius: $border-radius-lg;
   font-family: $font-family;
-  font-weight: $font-weight-medium;
+  font-weight: $font-weight-semibold;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all $duration-normal ease;
   text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    transform: none !important;
+  }
+  
+  &:not(:disabled):active {
+    transform: translateY(1px);
   }
 }
 
 @mixin button-primary {
   @include button-base;
   background: $primary-gradient;
-  color: white;
+  color: $text-primary;
+  box-shadow: $shadow-md;
   
-  &:hover:not(:disabled) {
-    transform: translateY(-1px);
-    box-shadow: $shadow-lg;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left $duration-slow ease;
   }
   
-  &:active {
-    transform: translateY(0);
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: $shadow-xl, $glow-secondary;
+    
+    &::before {
+      left: 100%;
+    }
   }
 }
 
 @mixin button-secondary {
   @include button-base;
-  background: white;
+  background: transparent;
   color: $primary-color;
   border: 2px solid $primary-color;
   
   &:hover:not(:disabled) {
     background: $primary-color;
-    color: white;
+    color: $text-primary;
+    box-shadow: $glow-secondary;
+    transform: translateY(-1px);
   }
 }
 
@@ -72,50 +95,80 @@
   @include button-base;
   background: transparent;
   color: $text-primary;
-  border: 1px solid #E5E7EB;
+  border: 1px solid $glass-border;
   
   &:hover:not(:disabled) {
-    background: #F9FAFB;
+    background: $glass-background;
     border-color: $primary-color;
+    color: $primary-color;
+    box-shadow: $glow-soft;
+    transform: translateY(-1px);
   }
 }
 
-// Card Mixins
+// Card Mixins (Enhanced for Dark Theme)
 @mixin card {
-  background: white;
-  border-radius: $border-radius-lg;
-  box-shadow: $shadow-md;
+  background: $card-background;
+  backdrop-filter: $backdrop-blur-light;
+  border: 1px solid $glass-border;
+  border-radius: $border-radius-xl;
+  box-shadow: $shadow-lg;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all $duration-normal ease;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: $accent-gradient;
+    opacity: 0.5;
+  }
   
   &:hover {
-    box-shadow: $shadow-xl;
+    box-shadow: $shadow-xl, $glow-soft;
     transform: translateY(-2px);
+    border-color: rgba(168, 85, 247, 0.3);
   }
 }
 
 @mixin card-body {
-  padding: $spacing-lg;
+  padding: $spacing-xl;
 }
 
-// Form Mixins
+// Form Mixins (Enhanced for Dark Theme)
 @mixin input-base {
   width: 100%;
-  padding: $spacing-md;
-  border: 1px solid #D1D5DB;
-  border-radius: $border-radius-md;
+  padding: $spacing-md $spacing-lg;
+  background: rgba(42, 42, 42, 0.6);
+  border: 1px solid $glass-border;
+  border-radius: $border-radius-lg;
+  color: $text-primary;
   font-family: $font-family;
   font-size: $font-size-base;
-  transition: all 0.2s ease;
+  transition: all $duration-normal ease;
+  backdrop-filter: $backdrop-blur-light;
+  
+  &::placeholder {
+    color: $text-light;
+    opacity: 0.7;
+  }
   
   &:focus {
     outline: none;
     border-color: $primary-color;
-    box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.1);
+    background: rgba(42, 42, 42, 0.8);
+    box-shadow: $glow-secondary;
+    transform: translateY(-1px);
   }
   
-  &::placeholder {
-    color: $text-light;
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: rgba(26, 26, 26, 0.4);
   }
 }
 
@@ -125,31 +178,49 @@
   label {
     display: block;
     margin-bottom: $spacing-sm;
-    font-weight: $font-weight-medium;
+    font-weight: $font-weight-semibold;
     color: $text-primary;
+    font-size: $font-size-sm;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 }
 
-// Modal Mixins
+// Modal Mixins (Enhanced for Dark Theme)
 @mixin modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: $backdrop-blur;
   z-index: $z-modal-backdrop;
   @include flex-center;
 }
 
 @mixin modal-content {
-  background: white;
-  border-radius: $border-radius-xl;
-  box-shadow: $shadow-xl;
+  background: $modal-background;
+  backdrop-filter: $backdrop-blur;
+  border: 1px solid $glass-border;
+  border-radius: $border-radius-2xl;
+  box-shadow: $shadow-2xl, $glow-soft;
   max-width: 90vw;
   max-height: 90vh;
   overflow-y: auto;
   z-index: $z-modal;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: $primary-gradient;
+    opacity: 0.3;
+  }
 }
 
 // Responsive Mixins
@@ -171,23 +242,68 @@
   }
 }
 
-// Animation Mixins
-@mixin fade-in {
-  animation: fadeIn 0.3s ease-in-out;
+// Animation Mixins (Enhanced)
+@mixin fade-in($duration: $duration-normal, $delay: 0s) {
+  animation: fadeIn $duration ease-out $delay both;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
 }
 
-@mixin slide-in-right {
-  animation: slideInRight 0.3s ease-out;
+@mixin slide-in-right($duration: $duration-normal, $delay: 0s) {
+  animation: slideInRight $duration ease-out $delay both;
 }
 
 @keyframes slideInRight {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
+  from { 
+    opacity: 0;
+    transform: translateX(30px); 
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0); 
+  }
+}
+
+@mixin slide-up($duration: $duration-normal, $delay: 0s) {
+  animation: slideUp $duration ease-out $delay both;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Glass Morphism Mixin
+@mixin glass-effect($opacity: 0.8) {
+  background: rgba(26, 26, 26, $opacity);
+  backdrop-filter: $backdrop-blur;
+  border: 1px solid $glass-border;
+  box-shadow: $shadow-lg, $glow-soft;
+}
+
+// Glow Effect Mixin
+@mixin glow-on-hover($color: $primary-color) {
+  transition: all $duration-normal ease;
+  
+  &:hover {
+    box-shadow: 0 0 20px rgba($color, 0.5);
+    border-color: rgba($color, 0.5);
+  }
 }
 
 // Layout Mixins
@@ -199,5 +315,33 @@
   
   @include mobile {
     padding: 0 $spacing-md;
+  }
+}
+
+// Text Gradient Mixin
+@mixin text-gradient($gradient: $primary-gradient) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Futuristic Border Mixin
+@mixin futuristic-border {
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: $accent-gradient;
+    border-radius: inherit;
+    padding: 1px;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: subtract;
+    pointer-events: none;
   }
 } 

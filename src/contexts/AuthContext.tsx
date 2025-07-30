@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { User, SessionData, ProductsResponse } from '../types';
 import { authAPI } from '../services/api';
 
@@ -6,6 +6,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   products: ProductsResponse | null;
+  sessionData: SessionData | null;
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
   refreshProducts: () => Promise<void>;
@@ -29,15 +30,16 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [products, setProductsState] = useState<ProductsResponse | null>(null);
+  const [sessionData, setSessionData] = useState<SessionData | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   // Check for existing session on app load
   useEffect(() => {
     const checkExistingSession = () => {
       try {
-        const sessionData = sessionStorage.getItem('vehicleRentalSession');
-        if (sessionData) {
-          const parsedSession: SessionData = JSON.parse(sessionData);
+        const sessionDataString = sessionStorage.getItem('vehicleRentalSession');
+        if (sessionDataString) {
+          const parsedSession: SessionData = JSON.parse(sessionDataString);
           setUser({
             id: parsedSession.userId,
             username: parsedSession.username,
@@ -46,6 +48,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             password: ''
           });
           setProductsState(parsedSession.products);
+          setSessionData(parsedSession);
           setIsAuthenticated(true);
         }
       } catch (error) {
@@ -74,17 +77,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             password: ''
           };
 
-          const sessionData: SessionData = {
+          const newSessionData: SessionData = {
             userId: username,
             username,
-            products: productsResponse?.data
+            products: productsResponse?.data || { bikes: [], cars: [] }
           };
 
           // Save to session storage
-          sessionStorage.setItem('vehicleRentalSession', JSON.stringify(sessionData));
+          sessionStorage.setItem('vehicleRentalSession', JSON.stringify(newSessionData));
           
           setUser(userData);
-          setProductsState(productsResponse?.data);
+          setProductsState(productsResponse?.data || null);
+          setSessionData(newSessionData);
           setIsAuthenticated(true);
           
           return true;
@@ -110,45 +114,56 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       sessionStorage.removeItem('vehicleRentalSession');
       setUser(null);
       setProductsState(null);
+      setSessionData(null);
       setIsAuthenticated(false);
     }
   };
 
-  const refreshProducts = async () => {
+  // Use useCallback to prevent function recreation on every render
+  const refreshProducts = useCallback(async () => {
     try {
       const response = await authAPI.getProducts();
       if (response.status === 'success') {
-        setProductsState(response.data);
+        setProductsState(response.data || null);
         
         // Update session storage
         const existingSession = sessionStorage.getItem('vehicleRentalSession');
         if (existingSession) {
-          const sessionData = JSON.parse(existingSession);
-          sessionData.products = response.data;
-          sessionStorage.setItem('vehicleRentalSession', JSON.stringify(sessionData));
+          const currentSessionData = JSON.parse(existingSession);
+          const updatedSessionData = {
+            ...currentSessionData,
+            products: response.data
+          };
+          setSessionData(updatedSessionData);
+          sessionStorage.setItem('vehicleRentalSession', JSON.stringify(updatedSessionData));
         }
       }
     } catch (error) {
       console.error('Error refreshing products:', error);
     }
-  };
+  }, []); // Empty dependency array since this function doesn't depend on any state
 
-  const setProducts = (newProducts: ProductsResponse) => {
+  const setProducts = useCallback((newProducts: ProductsResponse) => {
     setProductsState(newProducts);
     
     // Update session storage
     const existingSession = sessionStorage.getItem('vehicleRentalSession');
     if (existingSession) {
-      const sessionData = JSON.parse(existingSession);
-      sessionData.products = newProducts;
-      sessionStorage.setItem('vehicleRentalSession', JSON.stringify(sessionData));
+      const currentSessionData = JSON.parse(existingSession);
+      const updatedSessionData = {
+        ...currentSessionData,
+        products: newProducts
+      };
+      setSessionData(updatedSessionData);
+      sessionStorage.setItem('vehicleRentalSession', JSON.stringify(updatedSessionData));
     }
-  };
+  }, []);
 
   const value: AuthContextType = {
     user,
     isAuthenticated,
     products,
+    sessionData,
     login,
     logout,
     refreshProducts,
