@@ -447,6 +447,97 @@ app.post('/api/add-product', validation.addProduct, async (req, res) => {
   }
 });
 
+// 11. Forgot Password - Verify Phone Number
+app.post('/api/auth/forgot-password/verify-phone', validation.verifyPhone, async (req, res) => {
+  try {
+    const { mobileNumber } = req.body;
+    const users = await readJsonFile(USERS_FILE);
+    
+    if (!users) {
+      return res.json({ status: 'failure', message: 'Unable to access user data' });
+    }
+    
+    const user = users.find(u => u.mobileNumber === mobileNumber);
+    if (!user) {
+      return res.json({ status: 'failure', message: 'Phone number not found. Please check and try again.' });
+    }
+    
+    // In production, you would generate and send an actual OTP via SMS
+    // For now, we'll just confirm the phone number exists
+    res.json({ 
+      status: 'success', 
+      message: 'Phone number verified. OTP will be sent shortly.' 
+    });
+  } catch (error) {
+    console.error('Verify phone error:', error);
+    res.json({ status: 'failure', message: 'Internal server error' });
+  }
+});
+
+// 12. Forgot Password - Verify OTP
+app.post('/api/auth/forgot-password/verify-otp', validation.verifyOTP, async (req, res) => {
+  try {
+    const { mobileNumber, otp } = req.body;
+    
+    // In production, you would verify the OTP against what was sent
+    // For now, we'll accept any 6-digit OTP for testing purposes
+    // You can implement actual OTP verification logic here
+    
+    // Mock verification - in real implementation, check against stored OTP
+    if (otp.length === 6 && /^[0-9]{6}$/.test(otp)) {
+      res.json({ 
+        status: 'success', 
+        message: 'OTP verified successfully' 
+      });
+    } else {
+      res.json({ 
+        status: 'failure', 
+        message: 'Invalid OTP. Please try again.' 
+      });
+    }
+  } catch (error) {
+    console.error('Verify OTP error:', error);
+    res.json({ status: 'failure', message: 'Internal server error' });
+  }
+});
+
+// 13. Update User Password
+app.put('/api/auth/update-user', validation.updateUser, async (req, res) => {
+  try {
+    const { mobileNumber, newPassword } = req.body;
+    const users = await readJsonFile(USERS_FILE);
+    
+    if (!users) {
+      return res.json({ status: 'failure', message: 'Unable to access user data' });
+    }
+    
+    const userIndex = users.findIndex(u => u.mobileNumber === mobileNumber);
+    if (userIndex === -1) {
+      return res.json({ status: 'failure', message: 'User not found' });
+    }
+    
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    
+    // Update user password
+    users[userIndex].password = hashedPassword;
+    users[userIndex].updatedAt = new Date().toISOString();
+    
+    const success = await writeJsonFile(USERS_FILE, users);
+    if (!success) {
+      return res.json({ status: 'failure', message: 'Failed to update password' });
+    }
+    
+    res.json({ 
+      status: 'success', 
+      message: 'Password updated successfully' 
+    });
+  } catch (error) {
+    console.error('Update user error:', error);
+    res.json({ status: 'failure', message: 'Internal server error' });
+  }
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'success', message: 'Server is running' });

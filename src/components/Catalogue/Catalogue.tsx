@@ -20,6 +20,8 @@ const Catalogue: React.FC = () => {
   }
 
   const allVehicles: Vehicle[] = [...products.bikes, ...products.cars];
+  console.log('Catalogue - All vehicles:', allVehicles.length);
+  console.log('Catalogue - Bikes:', products.bikes.length, 'Cars:', products.cars.length);
   
   const getFilteredVehicles = (): Vehicle[] => {
     switch (activeTab) {

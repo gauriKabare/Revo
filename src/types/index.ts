@@ -98,6 +98,27 @@ export interface UpdateRentalFormData {
   totalDue: number;
 }
 
+// Forgot Password Types
+export interface ForgotPasswordPhoneData {
+  mobileNumber: string;
+}
+
+export interface ForgotPasswordOTPData {
+  mobileNumber: string;
+  otp: string;
+}
+
+export interface ForgotPasswordResetData {
+  mobileNumber: string;
+  newPassword: string;
+  retypeNewPassword: string;
+}
+
+export interface UpdateUserPasswordData {
+  mobileNumber: string;
+  newPassword: string;
+}
+
 // Navigation Types
 export interface NavItem {
   label: string;

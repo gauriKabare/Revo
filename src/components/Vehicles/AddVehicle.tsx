@@ -86,9 +86,10 @@ const AddVehicle: React.FC<AddVehicleProps> = ({ onClose }) => {
         setMessage('Vehicle added successfully!');
         setMessageType('success');
         
-        // Refresh products and close modal after a delay
-        setTimeout(async () => {
-          await refreshProducts();
+        // Refresh products immediately and close modal after a delay
+        await refreshProducts();
+        
+        setTimeout(() => {
           onClose();
         }, 1500);
       } else {

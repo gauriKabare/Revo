@@ -16,7 +16,7 @@ const schemas = {
   }),
 
   rentNow: Joi.object({
-    productId: Joi.string().uuid().required(),
+    productId: Joi.string().min(1).max(50).required(),
     customerName: Joi.string().min(2).max(100).required(),
     customerNumber: Joi.string().pattern(/^[0-9]{10}$/).required(),
     customerPAN: Joi.string().pattern(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/).required(),
@@ -26,7 +26,7 @@ const schemas = {
   }),
 
   makeAvailable: Joi.object({
-    productId: Joi.string().uuid().required()
+    productId: Joi.string().min(1).max(50).required()
   }),
 
   signOut: Joi.object({
@@ -34,7 +34,7 @@ const schemas = {
   }),
 
   updateRental: Joi.object({
-    productId: Joi.string().uuid().required(),
+    productId: Joi.string().min(1).max(50).required(),
     customerNumber: Joi.string().pattern(/^[0-9]{10}$/).required(),
     toDate: Joi.date().iso().required(),
     totalPaid: Joi.number().min(0).required()
@@ -48,6 +48,21 @@ const schemas = {
     availability: Joi.string().valid('available', 'rented').required(),
     manufacturingYear: Joi.number().integer().min(1980).max(new Date().getFullYear()).required(),
     rate: Joi.number().positive().required()
+  }),
+
+  // Forgot Password schemas
+  verifyPhone: Joi.object({
+    mobileNumber: Joi.string().pattern(/^[0-9]{10}$/).required()
+  }),
+
+  verifyOTP: Joi.object({
+    mobileNumber: Joi.string().pattern(/^[0-9]{10}$/).required(),
+    otp: Joi.string().pattern(/^[0-9]{6}$/).required()
+  }),
+
+  updateUser: Joi.object({
+    mobileNumber: Joi.string().pattern(/^[0-9]{10}$/).required(),
+    newPassword: Joi.string().min(6).max(100).required()
   })
 };
 
@@ -76,5 +91,9 @@ module.exports = {
   makeAvailable: validate(schemas.makeAvailable),
   signOut: validate(schemas.signOut),
   updateRental: validate(schemas.updateRental),
-  addProduct: validate(schemas.addProduct)
+  addProduct: validate(schemas.addProduct),
+  // Forgot Password validations
+  verifyPhone: validate(schemas.verifyPhone),
+  verifyOTP: validate(schemas.verifyOTP),
+  updateUser: validate(schemas.updateUser)
 }; 

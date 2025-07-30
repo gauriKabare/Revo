@@ -22,9 +22,10 @@
     "username": "revouser1",
     "email": "revouser@mail.com",
     "mobileNumber": "9359342011",
-    "password": "$2a$10$TEreTnvJ.X0gbxc.23IZ/uovx8LtZtvelEefQzLSBd7roJ1IOITj.",
+    "password": "$2a$10$PDUoiYtsRyp07vfo1/PQl.p9/y6/6X0CNH43ozkdbsHfOKG/euo3u",
     "profilePhoto": null,
-    "createdAt": "2025-07-29T11:55:30.247Z"
+    "createdAt": "2025-07-29T11:55:30.247Z",
+    "updatedAt": "2025-07-30T10:22:05.871Z"
   },
   {
     "id": "334e4980-f374-4a67-a44a-f8bbcc00e2c3",
