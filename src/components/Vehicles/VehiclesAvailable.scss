@@ -1,0 +1,410 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.vehicles-available {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacing-lg;
+
+  .page-header {
+    text-align: center;
+    margin-bottom: $spacing-3xl;
+
+    h1 {
+      font-size: $font-size-4xl;
+      font-weight: $font-weight-bold;
+      color: $text-primary;
+      margin: 0 0 $spacing-md 0;
+    }
+
+    p {
+      font-size: $font-size-lg;
+      color: $text-secondary;
+      margin: 0;
+    }
+  }
+
+  .stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: $spacing-lg;
+    margin-bottom: $spacing-3xl;
+
+    .stat-card {
+      background: $surface-color;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: $border-radius-lg;
+      padding: $spacing-xl;
+      display: flex;
+      align-items: center;
+      gap: $spacing-lg;
+      transition: all 0.3s ease;
+
+      &:hover {
+        border-color: $primary-color;
+        box-shadow: $shadow-lg;
+        transform: translateY(-2px);
+      }
+
+      .stat-icon {
+        font-size: 2.5rem;
+        opacity: 0.8;
+      }
+
+      .stat-content {
+        h3 {
+          font-size: $font-size-3xl;
+          font-weight: $font-weight-bold;
+          color: $text-primary;
+          margin: 0 0 $spacing-xs 0;
+          line-height: 1;
+        }
+
+        p {
+          font-size: $font-size-sm;
+          color: $text-secondary;
+          margin: 0;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          font-weight: $font-weight-medium;
+        }
+      }
+    }
+  }
+
+  .filter-section {
+    margin-bottom: $spacing-3xl;
+
+    .filter-tabs {
+      display: flex;
+      justify-content: center;
+      gap: $spacing-xs;
+      background: rgba(255, 255, 255, 0.05);
+      padding: $spacing-xs;
+      border-radius: $border-radius-lg;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+
+      .filter-tab {
+        padding: $spacing-sm $spacing-lg;
+        background: none;
+        border: none;
+        border-radius: $border-radius-md;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        color: $text-secondary;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: $primary-color;
+        }
+
+        &.active {
+          background: $primary-color;
+          color: $text-primary;
+          box-shadow: $shadow-sm;
+        }
+      }
+    }
+  }
+
+  .vehicles-section {
+    margin-bottom: $spacing-3xl;
+
+    .section-header {
+      margin-bottom: $spacing-xl;
+
+      h2 {
+        font-size: $font-size-2xl;
+        font-weight: $font-weight-semibold;
+        color: $text-primary;
+        margin: 0 0 $spacing-xs 0;
+      }
+
+      p {
+        font-size: $font-size-base;
+        color: $text-secondary;
+        margin: 0;
+      }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: $spacing-3xl;
+      background: $surface-color;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: $border-radius-lg;
+
+      .empty-icon {
+        font-size: 4rem;
+        margin-bottom: $spacing-lg;
+        opacity: 0.6;
+      }
+
+      h3 {
+        color: $text-primary;
+        font-size: $font-size-2xl;
+        font-weight: $font-weight-semibold;
+        margin: 0 0 $spacing-md 0;
+      }
+
+      p {
+        color: $text-secondary;
+        font-size: $font-size-base;
+        margin: 0;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  }
+
+  .quick-actions {
+    margin-bottom: $spacing-3xl;
+
+    .action-card {
+      background: rgba($success-color, 0.05);
+      border: 1px solid rgba($success-color, 0.2);
+      border-radius: $border-radius-lg;
+      padding: $spacing-xl;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .action-content {
+        flex: 1;
+
+        h4 {
+          font-size: $font-size-lg;
+          font-weight: $font-weight-semibold;
+          color: $success-color;
+          margin: 0 0 $spacing-xs 0;
+        }
+
+        p {
+          font-size: $font-size-base;
+          color: darken($success-color, 20%);
+          margin: 0;
+        }
+      }
+
+      .action-icon {
+        font-size: 2rem;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .insights-section {
+    background: rgba(255, 255, 255, 0.02);
+    padding: $spacing-xl;
+    border-radius: $border-radius-lg;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    h3 {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-semibold;
+      color: $text-primary;
+      margin: 0 0 $spacing-lg 0;
+      text-align: center;
+    }
+
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: $spacing-lg;
+
+      .insight-item {
+        background: rgba(255, 255, 255, 0.05);
+        padding: $spacing-lg;
+        border-radius: $border-radius-md;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+
+        .insight-label {
+          font-size: $font-size-sm;
+          color: $text-secondary;
+          margin-bottom: $spacing-xs;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          font-weight: $font-weight-medium;
+        }
+
+        .insight-value {
+          font-size: $font-size-lg;
+          font-weight: $font-weight-bold;
+          color: $text-primary;
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: $breakpoint-lg) {
+  .vehicles-available {
+    padding: $spacing-md;
+
+    .stats-cards {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: $spacing-md;
+      margin-bottom: $spacing-2xl;
+
+      .stat-card {
+        padding: $spacing-lg;
+        gap: $spacing-md;
+
+        .stat-icon {
+          font-size: 2rem;
+        }
+
+        .stat-content {
+          h3 {
+            font-size: $font-size-2xl;
+          }
+        }
+      }
+    }
+
+    .page-header {
+      margin-bottom: $spacing-2xl;
+
+      h1 {
+        font-size: $font-size-3xl;
+      }
+
+      p {
+        font-size: $font-size-base;
+      }
+    }
+
+    .filter-section,
+    .vehicles-section,
+    .quick-actions {
+      margin-bottom: $spacing-2xl;
+    }
+
+    .vehicles-section {
+      .section-header {
+        margin-bottom: $spacing-lg;
+
+        h2 {
+          font-size: $font-size-xl;
+        }
+
+        p {
+          font-size: $font-size-sm;
+        }
+      }
+    }
+
+    .insights-section {
+      padding: $spacing-lg;
+
+      h3 {
+        font-size: $font-size-lg;
+      }
+
+      .insights-grid {
+        gap: $spacing-md;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .vehicles-available {
+    .stats-cards {
+      grid-template-columns: 1fr 1fr;
+
+      .stat-card {
+        flex-direction: column;
+        text-align: center;
+        gap: $spacing-sm;
+
+        .stat-content {
+          h3 {
+            font-size: $font-size-xl;
+          }
+
+          p {
+            font-size: $font-size-xs;
+          }
+        }
+      }
+    }
+
+    .filter-section {
+      .filter-tabs {
+        flex-direction: column;
+        align-items: stretch;
+
+        .filter-tab {
+          text-align: center;
+        }
+      }
+    }
+
+    .quick-actions {
+      .action-card {
+        flex-direction: column;
+        text-align: center;
+        gap: $spacing-md;
+
+        .action-content {
+          h4 {
+            font-size: $font-size-base;
+          }
+
+          p {
+            font-size: $font-size-sm;
+          }
+        }
+      }
+    }
+
+    .insights-section {
+      .insights-grid {
+        grid-template-columns: 1fr 1fr;
+
+        .insight-item {
+          padding: $spacing-md;
+
+          .insight-label {
+            font-size: $font-size-xs;
+          }
+
+          .insight-value {
+            font-size: $font-size-base;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .vehicles-available {
+    .stats-cards {
+      grid-template-columns: 1fr;
+    }
+
+    .filter-section {
+      .filter-tabs {
+        gap: 0;
+
+        .filter-tab {
+          padding: $spacing-xs $spacing-md;
+          font-size: $font-size-xs;
+        }
+      }
+    }
+
+    .insights-section {
+      .insights-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+} 

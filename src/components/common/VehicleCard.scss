@@ -53,18 +53,21 @@
   padding: $spacing-xs $spacing-sm;
   border-radius: $border-radius-sm;
   font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-weight: $font-weight-medium;
+  text-transform: none;
+  letter-spacing: 0.3px;
+  border: 1px solid transparent;
   
   &.status-available {
-    background: rgba(16, 185, 129, 0.9);
-    color: white;
+    background: rgba(16, 185, 129, 0.15);
+    color: #10B981;
+    border-color: rgba(16, 185, 129, 0.3);
   }
   
   &.status-rented {
-    background: rgba(239, 68, 68, 0.9);
-    color: white;
+    background: rgba(239, 68, 68, 0.15);
+    color: #EF4444;
+    border-color: rgba(239, 68, 68, 0.3);
   }
 }
 
@@ -132,6 +135,7 @@
 }
 
 .rent-button {
+  @include button-primary;
   margin-top: $spacing-sm;
   padding: $spacing-sm $spacing-lg;
   font-size: $font-size-sm;

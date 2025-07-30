@@ -1,0 +1,274 @@
+@import '../../styles/variables';
+
+.vehicles-on-rent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacing-lg;
+
+  .page-header {
+    text-align: center;
+    margin-bottom: $spacing-3xl;
+
+    h1 {
+      font-size: $font-size-4xl;
+      font-weight: $font-weight-bold;
+      color: $text-primary;
+      margin: 0 0 $spacing-md 0;
+    }
+
+    p {
+      font-size: $font-size-lg;
+      color: $text-secondary;
+      margin: 0;
+    }
+  }
+
+  .stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: $spacing-lg;
+    margin-bottom: $spacing-3xl;
+
+    .stat-card {
+      background: $background-color;
+      border: 1px solid #e9ecef;
+      border-radius: $border-radius-lg;
+      padding: $spacing-xl;
+      display: flex;
+      align-items: center;
+      gap: $spacing-lg;
+      transition: all 0.3s ease;
+
+      &:hover {
+        border-color: $primary-color;
+        box-shadow: $shadow-lg;
+        transform: translateY(-2px);
+      }
+
+      .stat-icon {
+        font-size: 2.5rem;
+        opacity: 0.8;
+      }
+
+      .stat-content {
+        h3 {
+          font-size: $font-size-3xl;
+          font-weight: $font-weight-bold;
+          color: $text-primary;
+          margin: 0 0 $spacing-xs 0;
+          line-height: 1;
+        }
+
+        p {
+          font-size: $font-size-sm;
+          color: $text-secondary;
+          margin: 0;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          font-weight: $font-weight-medium;
+        }
+      }
+    }
+  }
+
+  .vehicles-section {
+    margin-bottom: $spacing-3xl;
+
+    .section-header {
+      margin-bottom: $spacing-xl;
+
+      h2 {
+        font-size: $font-size-2xl;
+        font-weight: $font-weight-semibold;
+        color: $text-primary;
+        margin: 0 0 $spacing-xs 0;
+      }
+
+      p {
+        font-size: $font-size-base;
+        color: $text-secondary;
+        margin: 0;
+      }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: $spacing-3xl;
+      background: $background-color;
+      border: 1px solid #e9ecef;
+      border-radius: $border-radius-lg;
+
+      .empty-icon {
+        font-size: 4rem;
+        margin-bottom: $spacing-lg;
+        opacity: 0.6;
+      }
+
+      h3 {
+        color: $text-primary;
+        font-size: $font-size-2xl;
+        font-weight: $font-weight-semibold;
+        margin: 0 0 $spacing-md 0;
+      }
+
+      p {
+        color: $text-secondary;
+        font-size: $font-size-base;
+        margin: 0;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  }
+
+  .alert-section {
+    .alert {
+      display: flex;
+      align-items: flex-start;
+      gap: $spacing-md;
+      padding: $spacing-lg;
+      border-radius: $border-radius-lg;
+      margin-bottom: $spacing-lg;
+
+      &.alert-warning {
+        background: rgba($warning-color, 0.1);
+        border: 1px solid rgba($warning-color, 0.3);
+        color: $warning-color;
+      }
+
+      .alert-icon {
+        font-size: $font-size-2xl;
+        flex-shrink: 0;
+        margin-top: $spacing-xs;
+      }
+
+      .alert-content {
+        flex: 1;
+
+        h4 {
+          font-size: $font-size-lg;
+          font-weight: $font-weight-semibold;
+          margin: 0 0 $spacing-xs 0;
+          color: inherit;
+        }
+
+        p {
+          font-size: $font-size-base;
+          margin: 0;
+          color: inherit;
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: $breakpoint-lg) {
+  .vehicles-on-rent {
+    padding: $spacing-md;
+
+    .stats-cards {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: $spacing-md;
+      margin-bottom: $spacing-2xl;
+
+      .stat-card {
+        padding: $spacing-lg;
+        gap: $spacing-md;
+
+        .stat-icon {
+          font-size: 2rem;
+        }
+
+        .stat-content {
+          h3 {
+            font-size: $font-size-2xl;
+          }
+        }
+      }
+    }
+
+    .page-header {
+      margin-bottom: $spacing-2xl;
+
+      h1 {
+        font-size: $font-size-3xl;
+      }
+
+      p {
+        font-size: $font-size-base;
+      }
+    }
+
+    .vehicles-section {
+      margin-bottom: $spacing-2xl;
+
+      .section-header {
+        margin-bottom: $spacing-lg;
+
+        h2 {
+          font-size: $font-size-xl;
+        }
+
+        p {
+          font-size: $font-size-sm;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .vehicles-on-rent {
+    .stats-cards {
+      grid-template-columns: 1fr 1fr;
+
+      .stat-card {
+        flex-direction: column;
+        text-align: center;
+        gap: $spacing-sm;
+
+        .stat-content {
+          h3 {
+            font-size: $font-size-xl;
+          }
+
+          p {
+            font-size: $font-size-xs;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .vehicles-on-rent {
+    .stats-cards {
+      grid-template-columns: 1fr;
+    }
+
+    .alert-section {
+      .alert {
+        padding: $spacing-md;
+        gap: $spacing-sm;
+
+        .alert-icon {
+          font-size: $font-size-xl;
+        }
+
+        .alert-content {
+          h4 {
+            font-size: $font-size-base;
+          }
+
+          p {
+            font-size: $font-size-sm;
+          }
+        }
+      }
+    }
+  }
+} 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { authAPI } from '../../services/api';
 import { CreateAccountData } from '../../types';
+import RevoLogo from '../common/RevoLogo';
 import './Login.scss';
 
 const Login: React.FC = () => {
@@ -135,150 +136,219 @@ const Login: React.FC = () => {
 
   return (
     <div className="login-container">
+      {/* Animated Background */}
+      <div className="background-animation">
+        <div className="floating-particles">
+          {[...Array(30)].map((_, i) => (
+            <div key={i} className={`particle particle-${i + 1}`}></div>
+          ))}
+        </div>
+      </div>
+
       <div className="login-wrapper">
         <div className="login-card">
+          {/* Logo Section */}
           <div className="login-header">
-            <h1 className="login-title">Vehicle Rental Management</h1>
+            <RevoLogo size="lg" animated={true} />
+            <div className="header-divider"></div>
             <p className="login-subtitle">
-              {isLogin ? 'Sign in to your account' : 'Create a new account'}
+              {isLogin ? 'Access Your Dashboard' : 'Join The Revolution'}
             </p>
           </div>
 
+          {/* Message Display */}
           {message && (
             <div className={`message ${messageType === 'success' ? 'message-success' : 'message-error'}`}>
+              <div className="message-icon">
+                {messageType === 'success' ? '✓' : '⚠'}
+              </div>
               {message}
             </div>
           )}
 
-          {isLogin ? (
-            <form onSubmit={handleLoginSubmit} className="login-form">
-              <div className="form-group">
-                <label htmlFor="username">Username</label>
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  value={loginForm.username}
-                  onChange={(e) => handleInputChange(e, 'login')}
-                  className="form-control"
-                  placeholder="Enter your username"
+          {/* Form Section */}
+          <div className="form-container">
+            {isLogin ? (
+              <form onSubmit={handleLoginSubmit} className="login-form">
+                <div className="form-group">
+                  <label htmlFor="username">
+                    <span className="label-text">Username</span>
+                    <span className="label-icon">👤</span>
+                  </label>
+                  <div className="input-wrapper">
+                    <input
+                      type="text"
+                      id="username"
+                      name="username"
+                      value={loginForm.username}
+                      onChange={(e) => handleInputChange(e, 'login')}
+                      className="form-control"
+                      placeholder="Enter your username"
+                      disabled={loading}
+                    />
+                    <div className="input-highlight"></div>
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="password">
+                    <span className="label-text">Password</span>
+                    <span className="label-icon">🔒</span>
+                  </label>
+                  <div className="input-wrapper">
+                    <input
+                      type="password"
+                      id="password"
+                      name="password"
+                      value={loginForm.password}
+                      onChange={(e) => handleInputChange(e, 'login')}
+                      className="form-control"
+                      placeholder="Enter your password"
+                      disabled={loading}
+                    />
+                    <div className="input-highlight"></div>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-futuristic"
                   disabled={loading}
-                />
-              </div>
+                >
+                  <span className="btn-text">
+                    {loading ? 'Authenticating...' : 'Sign In'}
+                  </span>
+                  <div className="btn-glow"></div>
+                </button>
 
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={loginForm.password}
-                  onChange={(e) => handleInputChange(e, 'login')}
-                  className="form-control"
-                  placeholder="Enter your password"
+                <div className="login-links">
+                  <a href="#" className="forgot-password">
+                    <span>Forgot Password?</span>
+                    <div className="link-underline"></div>
+                  </a>
+                </div>
+              </form>
+            ) : (
+              <form onSubmit={handleCreateAccountSubmit} className="login-form">
+                <div className="form-group">
+                  <label htmlFor="email">
+                    <span className="label-text">Email</span>
+                    <span className="label-icon">📧</span>
+                  </label>
+                  <div className="input-wrapper">
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={createForm.email}
+                      onChange={(e) => handleInputChange(e, 'create')}
+                      className="form-control"
+                      placeholder="Enter your email"
+                      disabled={loading}
+                    />
+                    <div className="input-highlight"></div>
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="mobileNumber">
+                    <span className="label-text">Mobile Number</span>
+                    <span className="label-icon">📱</span>
+                  </label>
+                  <div className="input-wrapper">
+                    <input
+                      type="tel"
+                      id="mobileNumber"
+                      name="mobileNumber"
+                      value={createForm.mobileNumber}
+                      onChange={(e) => handleInputChange(e, 'create')}
+                      className="form-control"
+                      placeholder="Enter your mobile number"
+                      disabled={loading}
+                    />
+                    <div className="input-highlight"></div>
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="createUsername">
+                    <span className="label-text">Username</span>
+                    <span className="label-icon">👤</span>
+                  </label>
+                  <div className="input-wrapper">
+                    <input
+                      type="text"
+                      id="createUsername"
+                      name="username"
+                      value={createForm.username}
+                      onChange={(e) => handleInputChange(e, 'create')}
+                      className="form-control"
+                      placeholder="Choose a username"
+                      disabled={loading}
+                    />
+                    <div className="input-highlight"></div>
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="createPassword">
+                    <span className="label-text">Password</span>
+                    <span className="label-icon">🔒</span>
+                  </label>
+                  <div className="input-wrapper">
+                    <input
+                      type="password"
+                      id="createPassword"
+                      name="password"
+                      value={createForm.password}
+                      onChange={(e) => handleInputChange(e, 'create')}
+                      className="form-control"
+                      placeholder="Create a password"
+                      disabled={loading}
+                    />
+                    <div className="input-highlight"></div>
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="retypePassword">
+                    <span className="label-text">Confirm Password</span>
+                    <span className="label-icon">🔐</span>
+                  </label>
+                  <div className="input-wrapper">
+                    <input
+                      type="password"
+                      id="retypePassword"
+                      name="retypePassword"
+                      value={createForm.retypePassword}
+                      onChange={(e) => handleInputChange(e, 'create')}
+                      className="form-control"
+                      placeholder="Confirm your password"
+                      disabled={loading}
+                    />
+                    <div className="input-highlight"></div>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-futuristic"
                   disabled={loading}
-                />
-              </div>
+                >
+                  <span className="btn-text">
+                    {loading ? 'Creating Account...' : 'Create Account'}
+                  </span>
+                  <div className="btn-glow"></div>
+                </button>
+              </form>
+            )}
+          </div>
 
-              <button
-                type="submit"
-                className="btn btn-primary btn-lg"
-                style={{ width: '100%', marginBottom: '1rem' }}
-                disabled={loading}
-              >
-                {loading ? 'Signing In...' : 'Sign In'}
-              </button>
-
-              <div className="login-links">
-                <a href="#" className="forgot-password">Forgot Password?</a>
-              </div>
-            </form>
-          ) : (
-            <form onSubmit={handleCreateAccountSubmit} className="login-form">
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={createForm.email}
-                  onChange={(e) => handleInputChange(e, 'create')}
-                  className="form-control"
-                  placeholder="Enter your email"
-                  disabled={loading}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="mobileNumber">Mobile Number</label>
-                <input
-                  type="tel"
-                  id="mobileNumber"
-                  name="mobileNumber"
-                  value={createForm.mobileNumber}
-                  onChange={(e) => handleInputChange(e, 'create')}
-                  className="form-control"
-                  placeholder="Enter your mobile number"
-                  disabled={loading}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="createUsername">Username</label>
-                <input
-                  type="text"
-                  id="createUsername"
-                  name="username"
-                  value={createForm.username}
-                  onChange={(e) => handleInputChange(e, 'create')}
-                  className="form-control"
-                  placeholder="Choose a username"
-                  disabled={loading}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="createPassword">Password</label>
-                <input
-                  type="password"
-                  id="createPassword"
-                  name="password"
-                  value={createForm.password}
-                  onChange={(e) => handleInputChange(e, 'create')}
-                  className="form-control"
-                  placeholder="Create a password"
-                  disabled={loading}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="retypePassword">Retype Password</label>
-                <input
-                  type="password"
-                  id="retypePassword"
-                  name="retypePassword"
-                  value={createForm.retypePassword}
-                  onChange={(e) => handleInputChange(e, 'create')}
-                  className="form-control"
-                  placeholder="Retype your password"
-                  disabled={loading}
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="btn btn-primary btn-lg"
-                style={{ width: '100%', marginBottom: '1rem' }}
-                disabled={loading}
-              >
-                {loading ? 'Creating Account...' : 'Create Account'}
-              </button>
-            </form>
-          )}
-
+          {/* Footer Section */}
           <div className="login-footer">
+            <div className="footer-divider"></div>
             <p>
-              {isLogin ? "New user? " : "Already have an account? "}
+              {isLogin ? "New to Revo? " : "Already have an account? "}
               <button
                 type="button"
                 className="link-button"
@@ -288,7 +358,8 @@ const Login: React.FC = () => {
                 }}
                 disabled={loading}
               >
-                {isLogin ? 'Create an account' : 'Sign in'}
+                <span>{isLogin ? 'Create an account' : 'Sign in'}</span>
+                <div className="link-underline"></div>
               </button>
             </p>
           </div>

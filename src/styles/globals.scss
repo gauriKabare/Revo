@@ -13,6 +13,7 @@
 html {
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -20,25 +21,46 @@ body {
   font-size: $font-size-base;
   line-height: 1.6;
   color: $text-primary;
-  background-color: #F9FAFB;
+  background-color: $background-color;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-// Typography
+// Typography (Dark Theme)
 h1, h2, h3, h4, h5, h6 {
   font-weight: $font-weight-semibold;
   line-height: 1.2;
   margin-bottom: $spacing-md;
   color: $text-primary;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-h1 { font-size: $font-size-4xl; }
-h2 { font-size: $font-size-3xl; }
-h3 { font-size: $font-size-2xl; }
-h4 { font-size: $font-size-xl; }
-h5 { font-size: $font-size-lg; }
-h6 { font-size: $font-size-base; }
+h1 { 
+  font-size: $font-size-4xl; 
+  font-weight: $font-weight-extrabold;
+}
+h2 { 
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+}
+h3 { 
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-semibold;
+}
+h4 { 
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+}
+h5 { 
+  font-size: $font-size-lg;
+  font-weight: $font-weight-medium;
+}
+h6 { 
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+}
 
 p {
   margin-bottom: $spacing-md;
@@ -48,14 +70,50 @@ p {
 a {
   color: $primary-color;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: all $duration-normal ease;
   
   &:hover {
-    color: darken($primary-color, 10%);
+    color: $accent-color;
+    text-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
   }
 }
 
-// Common Utility Classes
+// Selection styles
+::selection {
+  background: rgba(168, 85, 247, 0.3);
+  color: $text-primary;
+}
+
+::-moz-selection {
+  background: rgba(168, 85, 247, 0.3);
+  color: $text-primary;
+}
+
+// Scrollbar Styling (Dark Theme)
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $dark-secondary;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $primary-color;
+  border-radius: 4px;
+  
+  &:hover {
+    background: $accent-color;
+  }
+}
+
+::-webkit-scrollbar-corner {
+  background: $dark-secondary;
+}
+
+// Common Utility Classes (Enhanced for Dark Theme)
 .container {
   @include container;
 }
@@ -64,6 +122,11 @@ a {
   &-primary {
     @include button-primary;
     padding: $spacing-md $spacing-xl;
+    box-shadow: $shadow-md;
+    
+    &:hover {
+      box-shadow: $shadow-lg, $glow-secondary;
+    }
   }
   
   &-secondary {
@@ -76,9 +139,27 @@ a {
     padding: $spacing-md $spacing-xl;
   }
   
+  &-success {
+    @include button-base;
+    background: $success-color;
+    color: $text-primary;
+    padding: $spacing-md $spacing-xl;
+    
+    &:hover:not(:disabled) {
+      background: darken($success-color, 10%);
+      transform: translateY(-1px);
+      box-shadow: $shadow-lg;
+    }
+  }
+  
   &-sm {
     padding: $spacing-sm $spacing-lg;
     font-size: $font-size-sm;
+  }
+  
+  &-md {
+    padding: $spacing-md $spacing-xl;
+    font-size: $font-size-base;
   }
   
   &-lg {
@@ -111,16 +192,23 @@ a {
   &-primary { color: $text-primary; }
   &-secondary { color: $text-secondary; }
   &-light { color: $text-light; }
+  &-muted { color: $text-muted; }
   &-success { color: $success-color; }
   &-error { color: $error-color; }
   &-warning { color: $warning-color; }
+  &-info { color: $info-color; }
 }
 
 .bg {
   &-primary { background-color: $primary-color; }
   &-secondary { background-color: $secondary-color; }
-  &-white { background-color: white; }
-  &-gray { background-color: #F9FAFB; }
+  &-dark { background-color: $background-color; }
+  &-surface { background-color: $surface-color; }
+  &-card { background-color: $card-background; }
+  &-glass { 
+    background-color: $glass-background;
+    backdrop-filter: $backdrop-blur;
+  }
 }
 
 .flex {
@@ -139,7 +227,7 @@ a {
   &-3 { grid-template-columns: repeat(3, 1fr); }
   &-4 { grid-template-columns: repeat(4, 1fr); }
   
-  @include mobile {
+  @media (max-width: $breakpoint-md) {
     &-2, &-3, &-4 {
       grid-template-columns: 1fr;
     }
@@ -147,31 +235,39 @@ a {
 }
 
 .gap {
+  &-xs { gap: $spacing-xs; }
   &-sm { gap: $spacing-sm; }
   &-md { gap: $spacing-md; }
   &-lg { gap: $spacing-lg; }
   &-xl { gap: $spacing-xl; }
+  &-2xl { gap: $spacing-2xl; }
 }
 
 .mb {
+  &-xs { margin-bottom: $spacing-xs; }
   &-sm { margin-bottom: $spacing-sm; }
   &-md { margin-bottom: $spacing-md; }
   &-lg { margin-bottom: $spacing-lg; }
   &-xl { margin-bottom: $spacing-xl; }
+  &-2xl { margin-bottom: $spacing-2xl; }
 }
 
 .mt {
+  &-xs { margin-top: $spacing-xs; }
   &-sm { margin-top: $spacing-sm; }
   &-md { margin-top: $spacing-md; }
   &-lg { margin-top: $spacing-lg; }
   &-xl { margin-top: $spacing-xl; }
+  &-2xl { margin-top: $spacing-2xl; }
 }
 
 .p {
+  &-xs { padding: $spacing-xs; }
   &-sm { padding: $spacing-sm; }
   &-md { padding: $spacing-md; }
   &-lg { padding: $spacing-lg; }
   &-xl { padding: $spacing-xl; }
+  &-2xl { padding: $spacing-2xl; }
 }
 
 .rounded {
@@ -179,6 +275,7 @@ a {
   &-md { border-radius: $border-radius-md; }
   &-lg { border-radius: $border-radius-lg; }
   &-xl { border-radius: $border-radius-xl; }
+  &-2xl { border-radius: $border-radius-2xl; }
   &-full { border-radius: 50%; }
 }
 
@@ -187,6 +284,13 @@ a {
   &-md { box-shadow: $shadow-md; }
   &-lg { box-shadow: $shadow-lg; }
   &-xl { box-shadow: $shadow-xl; }
+  &-2xl { box-shadow: $shadow-2xl; }
+}
+
+.glow {
+  &-primary { box-shadow: $glow-primary; }
+  &-secondary { box-shadow: $glow-secondary; }
+  &-soft { box-shadow: $glow-soft; }
 }
 
 // Animation Classes
@@ -198,12 +302,109 @@ a {
   @include slide-in-right;
 }
 
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+// Glass Morphism Effect
+.glass {
+  background: $glass-background;
+  backdrop-filter: $backdrop-blur;
+  border: 1px solid $glass-border;
+  box-shadow: $shadow-lg, $glow-soft;
+}
+
+// Status Indicators
+.status {
+  &-online {
+    color: $success-color;
+    
+    &::before {
+      content: '●';
+      margin-right: $spacing-xs;
+    }
+  }
+  
+  &-offline {
+    color: $error-color;
+    
+    &::before {
+      content: '●';
+      margin-right: $spacing-xs;
+    }
+  }
+  
+  &-pending {
+    color: $warning-color;
+    
+    &::before {
+      content: '●';
+      margin-right: $spacing-xs;
+    }
+  }
+}
+
+// Loading States
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+  
+  &-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid $glass-border;
+    border-radius: 50%;
+    border-top-color: $primary-color;
+    animation: spin 1s ease-in-out infinite;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 // Hide/Show on Mobile
-@include mobile {
+@media (max-width: $breakpoint-md) {
   .hide-mobile { display: none !important; }
 }
 
-@include desktop {
+@media (min-width: $breakpoint-lg) {
   .hide-desktop { display: none !important; }
   .show-mobile-only { display: none !important; }
+}
+
+// Focus States (Enhanced for Dark Theme)
+*:focus {
+  outline: 2px solid $primary-color;
+  outline-offset: 2px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
+}
+
+// Dark Theme Modal Backdrop
+.modal-backdrop {
+  @include modal-backdrop;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: $backdrop-blur;
+}
+
+.modal-content {
+  @include modal-content;
+  background: $modal-background;
+  border: 1px solid $glass-border;
 } 

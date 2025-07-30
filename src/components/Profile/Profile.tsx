@@ -19,7 +19,7 @@ const Profile: React.FC = () => {
         const response = await authAPI.getOwner(user.username);
         
         if (response.status === 'success') {
-          setProfileData(response?.data);
+          setProfileData(response?.data || null);
         } else {
           setError(response?.message || 'Failed to load profile data');
         }

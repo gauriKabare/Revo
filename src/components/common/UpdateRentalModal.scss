@@ -1,0 +1,290 @@
+@import '../../styles/variables';
+
+.update-rental-modal {
+  max-width: 800px;
+  width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  .modal-header {
+    padding: $spacing-lg;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      margin: 0;
+      color: $text-primary;
+      font-size: $font-size-xl;
+      font-weight: $font-weight-semibold;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: $font-size-2xl;
+      cursor: pointer;
+      color: $text-secondary;
+      padding: $spacing-xs;
+      border-radius: $border-radius-sm;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba($error-color, 0.1);
+        color: $error-color;
+      }
+    }
+  }
+
+  .modal-body {
+    padding: $spacing-lg;
+
+    .vehicle-summary {
+      display: flex;
+      align-items: center;
+      gap: $spacing-md;
+      margin-bottom: $spacing-lg;
+      padding: $spacing-md;
+      background: #f8f9fa;
+      border-radius: $border-radius-md;
+
+      img {
+        width: 80px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: $border-radius-sm;
+      }
+
+      .vehicle-info {
+        h4 {
+          margin: 0 0 $spacing-xs 0;
+          color: $text-primary;
+          font-size: $font-size-lg;
+          font-weight: $font-weight-semibold;
+        }
+
+        p {
+          margin: 0;
+          color: $text-secondary;
+          font-size: $font-size-sm;
+        }
+      }
+    }
+
+    .message {
+      padding: $spacing-sm $spacing-md;
+      border-radius: $border-radius-md;
+      margin-bottom: $spacing-lg;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+
+      &.message-success {
+        background: rgba($success-color, 0.1);
+        color: $success-color;
+        border: 1px solid rgba($success-color, 0.3);
+      }
+
+      &.message-error {
+        background: rgba($error-color, 0.1);
+        color: $error-color;
+        border: 1px solid rgba($error-color, 0.3);
+      }
+    }
+
+    .update-rental-form {
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: $spacing-lg;
+        margin-bottom: $spacing-lg;
+
+        @media (max-width: $breakpoint-md) {
+          grid-template-columns: 1fr;
+          gap: $spacing-md;
+        }
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+
+        label {
+          font-size: $font-size-sm;
+          font-weight: $font-weight-medium;
+          color: $text-primary;
+          margin-bottom: $spacing-xs;
+        }
+
+        .form-control {
+          padding: $spacing-sm $spacing-md;
+          border: 1px solid #ddd;
+          border-radius: $border-radius-md;
+          font-size: $font-size-base;
+          transition: all 0.3s ease;
+
+          &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+          }
+
+          &:disabled,
+          &:read-only {
+            background: #f8f9fa;
+            color: $text-secondary;
+            cursor: not-allowed;
+          }
+
+          &.readonly {
+            background: #f8f9fa;
+            border-color: #e9ecef;
+          }
+        }
+
+        .editable-field-group {
+          display: flex;
+          align-items: center;
+          gap: $spacing-xs;
+
+          .form-control {
+            flex: 1;
+          }
+
+          .edit-toggle-btn {
+            background: $primary-color;
+            color: white;
+            border: none;
+            padding: $spacing-xs;
+            border-radius: $border-radius-sm;
+            cursor: pointer;
+            font-size: $font-size-sm;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+
+            &:hover {
+              background: darken($primary-color, 10%);
+              transform: scale(1.05);
+            }
+
+            &:disabled {
+              background: #ccc;
+              cursor: not-allowed;
+              transform: none;
+            }
+          }
+        }
+
+        .form-text {
+          font-size: $font-size-xs;
+          color: $text-light;
+          margin-top: $spacing-xs;
+        }
+      }
+
+      .rental-summary {
+        background: #f8f9fa;
+        padding: $spacing-md;
+        border-radius: $border-radius-md;
+        margin-bottom: $spacing-lg;
+
+        .summary-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: $spacing-xs 0;
+          border-bottom: 1px solid #e9ecef;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          &.total {
+            font-weight: $font-weight-semibold;
+            color: $primary-color;
+            font-size: $font-size-lg;
+            padding-top: $spacing-sm;
+            border-top: 2px solid $primary-color;
+            margin-top: $spacing-sm;
+          }
+
+          span:first-child {
+            color: $text-secondary;
+          }
+
+          span:last-child {
+            font-weight: $font-weight-medium;
+            color: $text-primary;
+          }
+        }
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: $spacing-md;
+        justify-content: flex-end;
+        padding-top: $spacing-lg;
+        border-top: 1px solid #e9ecef;
+
+        .btn {
+          padding: $spacing-sm $spacing-lg;
+          border-radius: $border-radius-md;
+          font-size: $font-size-base;
+          font-weight: $font-weight-medium;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: none;
+          min-width: 120px;
+
+          &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+          }
+
+          &.btn-outline {
+            background: white;
+            color: $text-secondary;
+            border: 1px solid #ddd;
+
+            &:hover:not(:disabled) {
+              background: #f8f9fa;
+              border-color: $primary-color;
+              color: $primary-color;
+            }
+          }
+
+          &.btn-primary {
+            background: $primary-color;
+            color: white;
+
+            &:hover:not(:disabled) {
+              background: darken($primary-color, 10%);
+              transform: translateY(-1px);
+              box-shadow: $shadow-md;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Loading spinner animation
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid $primary-color;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+} 
