@@ -260,3 +260,44 @@
     font-weight: $font-weight-medium;
   }
 } 
+
+.success-notification {
+  position: fixed;
+  top: $spacing-xl;
+  right: $spacing-xl;
+  background: rgba($success-color, 0.1);
+  border: 1px solid rgba($success-color, 0.3);
+  color: $success-color;
+  padding: $spacing-md $spacing-lg;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-lg;
+  backdrop-filter: blur(10px);
+  z-index: $z-fixed;
+  animation: slideInRight 0.3s ease-out;
+  @include flex-start;
+  gap: $spacing-sm;
+  font-weight: $font-weight-medium;
+
+  .success-icon {
+    font-weight: bold;
+    font-size: $font-size-lg;
+  }
+
+  @include mobile {
+    top: $spacing-md;
+    right: $spacing-md;
+    left: $spacing-md;
+    width: auto;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+} 

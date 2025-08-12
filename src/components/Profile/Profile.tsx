@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { authAPI } from '../../services/api';
-import { OwnerResponse } from '../../types';
+import { OwnerResponse, User } from '../../types';
+import EditProfileModal from './EditProfileModal';
+import ChangePasswordModal from './ChangePasswordModal';
 import './Profile.scss';
 
 const Profile: React.FC = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const [profileData, setProfileData] = useState<OwnerResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -32,6 +37,29 @@ const Profile: React.FC = () => {
 
     fetchProfile();
   }, [user]);
+
+  const handleProfileUpdate = async (updatedUser: User) => {
+    // Update user in AuthContext
+    updateUser(updatedUser);
+    
+    // Refetch profile data to get latest info
+    try {
+      const response = await authAPI.getOwner(updatedUser.username);
+      if (response.status === 'success') {
+        setProfileData(response?.data || null);
+      }
+    } catch (error) {
+      console.error('Error refreshing profile data:', error);
+    }
+    
+    setSuccessMessage('Profile updated successfully!');
+    setTimeout(() => setSuccessMessage(''), 3000);
+  };
+
+  const handlePasswordChangeSuccess = () => {
+    setSuccessMessage('Password changed successfully!');
+    setTimeout(() => setSuccessMessage(''), 3000);
+  };
 
   if (loading) {
     return (
@@ -80,7 +108,13 @@ const Profile: React.FC = () => {
                 />
               </div>
               <div className="avatar-info">
-                <h3>{profileData?.username || user?.username}</h3>
+                <h3>
+                  {(profileData?.firstName && profileData?.lastName) 
+                    ? `${profileData.firstName} ${profileData.lastName}`
+                    : (user?.firstName && user?.lastName) 
+                      ? `${user.firstName} ${user.lastName}` 
+                      : user?.username}
+                </h3>
                 <p>Vehicle Rental Owner</p>
               </div>
             </div>
@@ -121,10 +155,16 @@ const Profile: React.FC = () => {
           </div>
 
           <div className="profile-actions">
-            <button className="btn btn-primary">
+            <button 
+              className="btn btn-primary"
+              onClick={() => setShowEditModal(true)}
+            >
               Edit Profile
             </button>
-            <button className="btn btn-outline">
+            <button 
+              className="btn btn-outline"
+              onClick={() => setShowPasswordModal(true)}
+            >
               Change Password
             </button>
           </div>
@@ -157,7 +197,40 @@ const Profile: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Success Message */}
+        {successMessage && (
+          <div className="success-notification">
+            <span className="success-icon">✓</span>
+            {successMessage}
+          </div>
+        )}
       </div>
+
+      {/* Modals */}
+      {user && (
+        <EditProfileModal
+          user={{
+            ...user,
+            // Override with more complete data from profileData if available
+            ...(profileData && {
+              email: profileData.email,
+              firstName: profileData.firstName,
+              lastName: profileData.lastName,
+              mobileNumber: profileData.contactNumber
+            })
+          }}
+          isOpen={showEditModal}
+          onClose={() => setShowEditModal(false)}
+          onUpdate={handleProfileUpdate}
+        />
+      )}
+      
+      <ChangePasswordModal
+        isOpen={showPasswordModal}
+        onClose={() => setShowPasswordModal(false)}
+        onSuccess={handlePasswordChangeSuccess}
+      />
     </div>
   );
 };

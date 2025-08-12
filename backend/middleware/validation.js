@@ -50,6 +50,36 @@ const schemas = {
     rate: Joi.number().positive().required()
   }),
 
+  updateVehicle: Joi.object({
+    id: Joi.string().min(1).max(50).required(),
+    photos: Joi.array().items(Joi.string().uri()).min(1).required(),
+    name: Joi.string().min(2).max(100).required(),
+    model: Joi.string().min(2).max(100).required(),
+    manufacturingYear: Joi.number().integer().min(1980).max(new Date().getFullYear()).required(),
+    rate: Joi.number().positive().required()
+  }),
+
+  // Profile update schemas
+  updateProfile: Joi.object({
+    email: Joi.string().email().required(),
+    firstName: Joi.string().min(1).max(50).required(),
+    lastName: Joi.string().min(1).max(50).required(),
+    mobileNumber: Joi.string().pattern(/^[0-9]{10}$/).optional().allow(''),
+    profilePhoto: Joi.string().optional() // Base64 encoded image
+  }),
+
+  // Change password schemas
+  changePasswordStep1: Joi.object({
+    currentPassword: Joi.string().min(6).max(100).required(),
+    newPassword: Joi.string().min(6).max(100).required()
+  }),
+
+  changePasswordStep2: Joi.object({
+    username: Joi.string().alphanum().min(3).max(30).required(),
+    newPassword: Joi.string().min(6).max(100).required(),
+    otp: Joi.string().pattern(/^[0-9]{6}$/).required()
+  }),
+
   // Forgot Password schemas
   verifyPhone: Joi.object({
     mobileNumber: Joi.string().pattern(/^[0-9]{10}$/).required()
@@ -63,6 +93,12 @@ const schemas = {
   updateUser: Joi.object({
     mobileNumber: Joi.string().pattern(/^[0-9]{10}$/).required(),
     newPassword: Joi.string().min(6).max(100).required()
+  }),
+
+  // Admin authentication schemas
+  adminOTP: Joi.object({
+    username: Joi.string().alphanum().min(3).max(30).required(),
+    otp: Joi.string().pattern(/^[0-9]{6}$/).required()
   })
 };
 
@@ -92,8 +128,16 @@ module.exports = {
   signOut: validate(schemas.signOut),
   updateRental: validate(schemas.updateRental),
   addProduct: validate(schemas.addProduct),
+  updateVehicle: validate(schemas.updateVehicle),
+  // Profile update validations
+  updateProfile: validate(schemas.updateProfile),
+  // Change password validations
+  changePasswordStep1: validate(schemas.changePasswordStep1),
+  changePasswordStep2: validate(schemas.changePasswordStep2),
   // Forgot Password validations
   verifyPhone: validate(schemas.verifyPhone),
   verifyOTP: validate(schemas.verifyOTP),
-  updateUser: validate(schemas.updateUser)
+  updateUser: validate(schemas.updateUser),
+  // Admin validations
+  adminOTP: validate(schemas.adminOTP)
 }; 

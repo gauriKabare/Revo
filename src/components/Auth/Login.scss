@@ -126,6 +126,65 @@
   position: relative;
   z-index: 3;
 
+  .admin-login-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: transparent;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    color: rgba(168, 85, 247, 0.8);
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-md;
+    font-size: $font-size-xs;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+    pointer-events: auto;
+    user-select: none;
+
+    .admin-icon {
+      font-size: $font-size-sm;
+    }
+
+    .admin-text {
+      font-weight: $font-weight-medium;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    &:hover {
+      border-color: $primary-color;
+      color: $primary-color;
+      background: rgba(168, 85, 247, 0.1);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    // Responsive styles
+    @media (max-width: $breakpoint-md) {
+      position: static;
+      margin: 0 auto $spacing-md auto;
+      width: fit-content;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      font-size: $font-size-sm;
+      padding: $spacing-sm $spacing-md;
+      
+      .admin-text {
+        display: inline;
+      }
+    }
+  }
+
   .header-divider {
     width: 60px;
     height: 2px;

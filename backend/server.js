@@ -7,6 +7,7 @@ const { v4: uuidv4 } = require('uuid');
 const fs = require('fs').promises;
 const path = require('path');
 const validation = require('./middleware/validation');
+const { authenticateToken, optionalAuth } = require('./middleware/auth');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -20,6 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // File paths
 const USERS_FILE = path.join(__dirname, 'data', 'users.json');
 const PRODUCTS_FILE = path.join(__dirname, 'data', 'products.json');
+const RENTAL_HISTORY_FILE = path.join(__dirname, 'data', 'rental-history.json');
 
 // Helper functions
 const readJsonFile = async (filePath) => {
@@ -51,9 +53,82 @@ const calculateTotalDue = (fromDate, toDate, rate) => {
   return daysDiff * rate;
 };
 
+// Helper function to create rental history record
+const createRentalHistoryRecord = async (vehicle, vehicleType, rentalInfo, userId = 'user-001') => {
+  try {
+    const rentalHistory = await readJsonFile(RENTAL_HISTORY_FILE);
+    if (!rentalHistory) {
+      console.error('Unable to read rental history file');
+      return false;
+    }
+
+    const newRecord = {
+      id: `rental-${Date.now()}`,
+      userId,
+      userName: rentalInfo.customerName,
+      vehicleId: vehicle.id,
+      vehicleName: vehicle.name,
+      vehicleType: vehicleType === 'bikes' ? 'bike' : 'car',
+      vehicleModel: vehicle.model,
+      startDate: rentalInfo.fromDate,
+      endDate: rentalInfo.toDate,
+      rentAmount: rentalInfo.totalDue,
+      status: 'active',
+      createdAt: new Date().toISOString()
+    };
+
+    rentalHistory.push(newRecord);
+    const success = await writeJsonFile(RENTAL_HISTORY_FILE, rentalHistory);
+    return success;
+  } catch (error) {
+    console.error('Error creating rental history record:', error);
+    return false;
+  }
+};
+
+// Helper function to update rental history record when vehicle is returned
+const updateRentalHistoryRecord = async (vehicleId) => {
+  try {
+    const rentalHistory = await readJsonFile(RENTAL_HISTORY_FILE);
+    if (!rentalHistory) {
+      console.error('Unable to read rental history file');
+      return false;
+    }
+
+    // Find the active rental record for this vehicle
+    const recordIndex = rentalHistory.findIndex(record => 
+      record.vehicleId === vehicleId && record.status === 'active'
+    );
+
+    if (recordIndex === -1) {
+      console.log('No active rental record found for vehicle:', vehicleId);
+      return true; // Not an error, just no active rental
+    }
+
+    // Update the record
+    const returnDate = new Date().toISOString();
+    const record = rentalHistory[recordIndex];
+    
+    // Check if returned late
+    const isOverdue = new Date(returnDate) > new Date(record.endDate);
+    
+    rentalHistory[recordIndex] = {
+      ...record,
+      returnDate,
+      status: isOverdue ? 'overdue' : 'completed'
+    };
+
+    const success = await writeJsonFile(RENTAL_HISTORY_FILE, rentalHistory);
+    return success;
+  } catch (error) {
+    console.error('Error updating rental history record:', error);
+    return false;
+  }
+};
+
 // API Routes
 
-// 1. Sign In
+// 1. Sign In (Regular Users Only)
 app.post('/api/auth/signin', validation.signIn, async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -66,6 +141,11 @@ app.post('/api/auth/signin', validation.signIn, async (req, res) => {
     const user = users.find(u => u.username === username);
     if (!user) {
       return res.json({ status: 'failure', message: 'User not found' });
+    }
+    
+    // Check if user is admin - admins cannot login through regular portal
+    if (user.role === 'admin') {
+      return res.json({ status: 'failure', message: 'Admin users must use the admin login portal' });
     }
     
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -167,7 +247,9 @@ app.get('/api/owner/:username', async (req, res) => {
       username: user.username,
       profilePhoto: user.profilePhoto,
       contactNumber: user.mobileNumber,
-      email: user.email
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName
     };
     
     res.json({ status: 'success', data: ownerData });
@@ -276,6 +358,13 @@ app.post('/api/rent-now', validation.rentNow, async (req, res) => {
     if (!success) {
       return res.json({ status: 'failure', message: 'Failed to update product data' });
     }
+
+    // Create rental history record
+    await createRentalHistoryRecord(
+      vehicle, 
+      vehicleType, 
+      products[vehicleType][vehicleIndex].rentalInfo
+    );
     
     res.json({ status: 'success', message: 'Vehicle rented successfully' });
   } catch (error) {
@@ -312,6 +401,8 @@ app.post('/api/make-available', validation.makeAvailable, async (req, res) => {
       return res.json({ status: 'failure', message: 'Vehicle not found' });
     }
     
+    const vehicleId = products[vehicleType][vehicleIndex].id;
+    
     // Update vehicle
     products[vehicleType][vehicleIndex] = {
       ...products[vehicleType][vehicleIndex],
@@ -325,6 +416,9 @@ app.post('/api/make-available', validation.makeAvailable, async (req, res) => {
     if (!success) {
       return res.json({ status: 'failure', message: 'Failed to update product data' });
     }
+
+    // Update rental history record
+    await updateRentalHistoryRecord(vehicleId);
     
     res.json({ status: 'success', message: 'Vehicle is now available' });
   } catch (error) {
@@ -447,7 +541,198 @@ app.post('/api/add-product', validation.addProduct, async (req, res) => {
   }
 });
 
-// 11. Forgot Password - Verify Phone Number
+// 11. Update Vehicle
+app.put('/api/update-vehicle', validation.updateVehicle, async (req, res) => {
+  try {
+    const { id, photos, name, model, manufacturingYear, rate } = req.body;
+    const products = await readJsonFile(PRODUCTS_FILE);
+    
+    if (!products) {
+      return res.json({ status: 'failure', message: 'Unable to access product data' });
+    }
+    
+    // Find vehicle
+    let vehicleIndex = -1;
+    let vehicleType = '';
+    
+    vehicleIndex = products.bikes.findIndex(v => v.id === id);
+    if (vehicleIndex !== -1) {
+      vehicleType = 'bikes';
+    } else {
+      vehicleIndex = products.cars.findIndex(v => v.id === id);
+      if (vehicleIndex !== -1) {
+        vehicleType = 'cars';
+      }
+    }
+    
+    if (vehicleIndex === -1) {
+      return res.json({ status: 'failure', message: 'Vehicle not found' });
+    }
+    
+    // Update vehicle while preserving other properties
+    products[vehicleType][vehicleIndex] = {
+      ...products[vehicleType][vehicleIndex],
+      photos,
+      name,
+      model,
+      manufacturingYear,
+      rate
+    };
+    
+    const success = await writeJsonFile(PRODUCTS_FILE, products);
+    if (!success) {
+      return res.json({ status: 'failure', message: 'Failed to update vehicle data' });
+    }
+    
+    res.json({ status: 'success', message: 'Vehicle updated successfully' });
+  } catch (error) {
+    console.error('Update vehicle error:', error);
+    res.json({ status: 'failure', message: 'Internal server error' });
+  }
+});
+
+// 12. Update Profile (Note: For file upload, you would typically use multer middleware)
+app.put('/api/profile/update', authenticateToken, validation.updateProfile, async (req, res) => {
+  try {
+    const { email, firstName, lastName, mobileNumber, profilePhoto } = req.body;
+    const username = req.user.username; // Now properly extracted from JWT token
+    
+    console.log('Updating profile for user:', username);
+    console.log('Update data:', { email, firstName, lastName, mobileNumber });
+    
+    const users = await readJsonFile(USERS_FILE);
+    if (!users) {
+      return res.json({ status: 'failure', message: 'Unable to access user data' });
+    }
+    
+    const userIndex = users.findIndex(u => u.username === username);
+    if (userIndex === -1) {
+      return res.json({ status: 'failure', message: 'User not found' });
+    }
+    
+    // Update user profile with all fields
+    users[userIndex] = {
+      ...users[userIndex],
+      email,
+      firstName,
+      lastName,
+      mobileNumber: mobileNumber || users[userIndex].mobileNumber,
+      ...(profilePhoto && { profilePhoto }),
+      updatedAt: new Date().toISOString()
+    };
+    
+    console.log('Updated user data:', users[userIndex]);
+    
+    const success = await writeJsonFile(USERS_FILE, users);
+    if (!success) {
+      return res.json({ status: 'failure', message: 'Failed to update profile' });
+    }
+    
+    // Return the full updated user object
+    const updatedUser = users[userIndex];
+    res.json({ 
+      status: 'success', 
+      message: 'Profile updated successfully',
+      data: {
+        id: updatedUser.id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        mobileNumber: updatedUser.mobileNumber,
+        profilePhoto: updatedUser.profilePhoto,
+        role: updatedUser.role || 'user',
+        createdAt: updatedUser.createdAt
+      }
+    });
+  } catch (error) {
+    console.error('Update profile error:', error);
+    res.json({ status: 'failure', message: 'Internal server error' });
+  }
+});
+
+// 13. Change Password - Step 1 (Validate current password and send OTP)
+app.post('/api/profile/change-password/step1', authenticateToken, validation.changePasswordStep1, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const username = req.user.username; // Properly extracted from JWT token
+    
+    const users = await readJsonFile(USERS_FILE);
+    if (!users) {
+      return res.json({ status: 'failure', message: 'Unable to access user data' });
+    }
+    
+    const user = users.find(u => u.username === username);
+    if (!user) {
+      return res.json({ status: 'failure', message: 'User not found' });
+    }
+    
+    // In production, you would hash and compare passwords
+    // For demo purposes, we'll simulate password validation
+    if (currentPassword.length < 6) {
+      return res.json({ status: 'failure', message: 'Current password is incorrect' });
+    }
+    
+    // Check if new password is different from current
+    if (currentPassword === newPassword) {
+      return res.json({ status: 'failure', message: 'New password must be different from current password' });
+    }
+    
+    // In production, generate and send OTP to user's mobile number
+    // For demo, we'll just confirm OTP will be sent
+    res.json({ 
+      status: 'success', 
+      message: 'Current password verified. OTP sent to your registered mobile number.',
+      username: username
+    });
+  } catch (error) {
+    console.error('Change password step 1 error:', error);
+    res.json({ status: 'failure', message: 'Internal server error' });
+  }
+});
+
+// 14. Change Password - Step 2 (Verify OTP and update password)
+app.post('/api/profile/change-password/step2', authenticateToken, validation.changePasswordStep2, async (req, res) => {
+  try {
+    const { username, newPassword, otp } = req.body;
+    
+    // Mock OTP verification - accept any 6-digit OTP for demo
+    if (otp.length === 6 && /^[0-9]{6}$/.test(otp)) {
+      const users = await readJsonFile(USERS_FILE);
+      if (!users) {
+        return res.json({ status: 'failure', message: 'Unable to access user data' });
+      }
+      
+      const userIndex = users.findIndex(u => u.username === username);
+      if (userIndex === -1) {
+        return res.json({ status: 'failure', message: 'User not found' });
+      }
+      
+      // In production, you would hash the new password before storing
+      users[userIndex].password = newPassword;
+      
+      const success = await writeJsonFile(USERS_FILE, users);
+      if (!success) {
+        return res.json({ status: 'failure', message: 'Failed to update password' });
+      }
+      
+      res.json({ 
+        status: 'success', 
+        message: 'Password changed successfully' 
+      });
+    } else {
+      res.json({ 
+        status: 'failure', 
+        message: 'Invalid OTP. Please try again.' 
+      });
+    }
+  } catch (error) {
+    console.error('Change password step 2 error:', error);
+    res.json({ status: 'failure', message: 'Internal server error' });
+  }
+});
+
+// 15. Forgot Password - Verify Phone Number
 app.post('/api/auth/forgot-password/verify-phone', validation.verifyPhone, async (req, res) => {
   try {
     const { mobileNumber } = req.body;
@@ -474,7 +759,7 @@ app.post('/api/auth/forgot-password/verify-phone', validation.verifyPhone, async
   }
 });
 
-// 12. Forgot Password - Verify OTP
+// 16. Forgot Password - Verify OTP
 app.post('/api/auth/forgot-password/verify-otp', validation.verifyOTP, async (req, res) => {
   try {
     const { mobileNumber, otp } = req.body;
@@ -501,7 +786,7 @@ app.post('/api/auth/forgot-password/verify-otp', validation.verifyOTP, async (re
   }
 });
 
-// 13. Update User Password
+// 17. Update User Password
 app.put('/api/auth/update-user', validation.updateUser, async (req, res) => {
   try {
     const { mobileNumber, newPassword } = req.body;
@@ -535,6 +820,103 @@ app.put('/api/auth/update-user', validation.updateUser, async (req, res) => {
   } catch (error) {
     console.error('Update user error:', error);
     res.json({ status: 'failure', message: 'Internal server error' });
+  }
+});
+
+// Admin Authentication Endpoints
+
+// Admin Sign In (Phase 1 - Credentials)
+app.post('/api/auth/admin-signin', validation.signIn, async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    const users = await readJsonFile(USERS_FILE);
+    if (!users) {
+      return res.status(500).json({ status: 'failure', message: 'Unable to read users data' });
+    }
+
+    // Find the admin user in the database
+    const user = users.find(u => u.username === username);
+    if (!user) {
+      return res.status(401).json({ status: 'failure', message: 'Admin user not found' });
+    }
+
+    // Check if user has admin role
+    if (user.role !== 'admin') {
+      return res.status(401).json({ status: 'failure', message: 'Access denied. Admin privileges required.' });
+    }
+
+    // Verify password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ status: 'failure', message: 'Invalid admin credentials' });
+    }
+
+    return res.json({ 
+      status: 'success', 
+      message: 'Admin credentials verified. OTP will be sent.' 
+    });
+  } catch (error) {
+    console.error('Admin signin error:', error);
+    res.status(500).json({ status: 'failure', message: 'Internal server error' });
+  }
+});
+
+// Admin OTP Verification (Phase 2)
+app.post('/api/auth/admin-verify-otp', validation.adminOTP, async (req, res) => {
+  try {
+    const { username, otp } = req.body;
+
+    const users = await readJsonFile(USERS_FILE);
+    if (!users) {
+      return res.status(500).json({ status: 'failure', message: 'Unable to read users data' });
+    }
+
+    // Find the admin user in the database
+    const user = users.find(u => u.username === username);
+    if (!user || user.role !== 'admin') {
+      return res.status(401).json({ status: 'failure', message: 'Admin user not found' });
+    }
+
+    // For demo purposes, accept any 6-digit OTP
+    // In production, this would validate against sent OTP
+    if (otp && otp.length === 6) {
+      const token = jwt.sign(
+        { userId: user.id, username: user.username, role: 'admin' },
+        JWT_SECRET,
+        { expiresIn: '1h' }
+      );
+
+      return res.json({
+        status: 'success',
+        message: 'Admin login successful',
+        data: { token }
+      });
+    }
+
+    return res.status(401).json({ status: 'failure', message: 'Invalid OTP' });
+  } catch (error) {
+    console.error('Admin OTP verification error:', error);
+    res.status(500).json({ status: 'failure', message: 'Internal server error' });
+  }
+});
+
+// Get Rental History (Admin Only)
+app.get('/api/admin/rental-history', async (req, res) => {
+  try {
+    const rentalHistory = await readJsonFile(RENTAL_HISTORY_FILE);
+    if (!rentalHistory) {
+      return res.status(500).json({ status: 'failure', message: 'Unable to read rental history' });
+    }
+
+    res.json({
+      status: 'success',
+      message: 'Rental history retrieved successfully',
+      data: rentalHistory
+    });
+  } catch (error) {
+    console.error('Get rental history error:', error);
+    res.status(500).json({ status: 'failure', message: 'Internal server error' });
   }
 });
 

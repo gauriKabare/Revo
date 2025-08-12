@@ -6,16 +6,18 @@ import { useAuth } from '../../contexts/AuthContext';
 import PhotoCarousel from '../common/PhotoCarousel';
 import RentModal from '../common/RentModal';
 import UpdateRentalModal from '../common/UpdateRentalModal';
+import EditVehicleModal from '../common/EditVehicleModal';
 import './VehicleDetail.scss';
 
 const VehicleDetail: React.FC = () => {
   const { type, id } = useParams<{ type: string; id: string }>();
   const navigate = useNavigate();
-  const { sessionData, refreshProducts } = useAuth();
+  const { sessionData, refreshProducts, hasPermission } = useAuth();
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
   const [loading, setLoading] = useState(true);
   const [showRentModal, setShowRentModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState<'success' | 'error'>('error');
@@ -181,6 +183,30 @@ const VehicleDetail: React.FC = () => {
               >
                 Rent Now
               </button>
+              {hasPermission('admin') && (
+                <button
+                  className="btn btn-outline btn-lg"
+                  onClick={() => setShowEditModal(true)}
+                  disabled={actionLoading}
+                >
+                  <span className="edit-icon">✏️</span>
+                  Edit Vehicle
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Admin Edit Button for Rented Vehicles */}
+          {vehicle.status === 'rented' && hasPermission('admin') && (
+            <div className="vehicle-actions">
+              <button
+                className="btn btn-outline btn-lg"
+                onClick={() => setShowEditModal(true)}
+                disabled={actionLoading}
+              >
+                <span className="edit-icon">✏️</span>
+                Edit Vehicle
+              </button>
             </div>
           )}
 
@@ -255,8 +281,10 @@ const VehicleDetail: React.FC = () => {
                 <button
                   className="btn btn-success"
                   onClick={handleMakeAvailable}
-                  disabled={actionLoading}
+                  disabled={actionLoading || !hasPermission('make_available')}
+                  title={!hasPermission('make_available') ? 'Admin access required' : ''}
                 >
+                  {!hasPermission('make_available') && <span className="lock-icon">🔒</span>}
                   {actionLoading ? 'Processing...' : 'Make Available'}
                 </button>
               </div>
@@ -282,6 +310,20 @@ const VehicleDetail: React.FC = () => {
             setShowUpdateModal(false);
             setMessage('Rental information updated successfully!');
             setMessageType('success');
+          }}
+        />
+      )}
+
+      {showEditModal && (
+        <EditVehicleModal
+          vehicle={vehicle}
+          onClose={() => setShowEditModal(false)}
+          onUpdate={(updatedVehicle) => {
+            setVehicle(updatedVehicle);
+            setShowEditModal(false);
+            setMessage('Vehicle updated successfully!');
+            setMessageType('success');
+            refreshProducts(); // Refresh the global product state
           }}
         />
       )}

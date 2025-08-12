@@ -3,107 +3,140 @@
     {
       "id": "bike-001",
       "photos": [
-        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=300&fit=crop",
-        "https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?w=500&h=300&fit=crop"
+        "https://gobikes-prod-public.s3.ap-south-1.amazonaws.com/uploads/admin/bike/82766231-1631-4ede-a25f-76448e2170a6.png",
+        "https://imgd.aeplcdn.com/664x374/n/cw/ec/183389/classic-350-right-front-three-quarter-2.jpeg?isig=0&q=80"
       ],
       "name": "Royal Enfield Classic 350",
-      "model": "Classic 350",
+      "model": "Classic 350 - Sealth Black",
       "type": "bike",
-      "availability": "rented",
+      "availability": "available",
       "manufacturingYear": 2023,
       "rate": 800,
+      "status": "available",
+      "isRentedFlag": false,
+      "createdDate": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "bike-002",
+      "photos": [
+        "https://5.imimg.com/data5/SELLER/Default/2022/4/MC/LT/TN/73308544/honda-cb-shine-125-cc-motorcycle-500x500.jpg",
+        "https://i0.wp.com/eamzn.in/wp-content/uploads/2023/09/honda-cb-shine-limited-edition-aa-82d7-jpg.webp?fit=1200%2C675&ssl=1",
+        "https://images.hindi.news18.com/ibnkhabar/uploads/2019/05/Honda-CB-Shine.jpg"
+      ],
+      "name": "Honda CB Shine",
+      "model": "CB Shine SP",
+      "type": "bike",
+      "availability": "rented",
+      "manufacturingYear": 2022,
+      "rate": 600,
       "status": "rented",
       "isRentedFlag": true,
       "createdDate": "2024-01-01T00:00:00.000Z",
       "rentalInfo": {
         "customerName": "GauriK",
         "customerNumber": "7634563788",
-        "customerPAN": "HXIPP9988H",
-        "customerAadhar": "123462537485",
-        "fromDate": "2025-07-30",
-        "toDate": "2025-08-09",
+        "customerPAN": "TYSDF8879Y",
+        "customerAadhar": "526354727364",
+        "fromDate": "2025-08-04",
+        "toDate": "2025-08-08",
         "totalPaid": 0,
-        "totalDue": 8000
+        "totalDue": 2400
       }
-    },
-    {
-      "id": "bike-002",
-      "photos": [
-        "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=500&h=300&fit=crop",
-        "https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=500&h=300&fit=crop"
-      ],
-      "name": "Honda CB Shine",
-      "model": "CB Shine SP",
-      "type": "bike",
-      "availability": "available",
-      "manufacturingYear": 2022,
-      "rate": 600,
-      "status": "available",
-      "isRentedFlag": false,
-      "createdDate": "2024-01-01T00:00:00.000Z"
     },
     {
       "id": "bike-003",
       "photos": [
-        "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=500&h=300&fit=crop"
+        "https://images.jdmagicbox.com/quickquotes/images_main/tvs-apache-rtr-160-4v-single-disc-abs-racing-blue-160088356-wmxsz.jpg",
+        "https://imgd.aeplcdn.com/1056x594/n/bw/models/colors/tvs-select-model-lightning-blue-1702974845209.png?q=80",
+        "https://5.imimg.com/data5/BI/CO/MY-30249099/tvs-apache-rtr-160-137-kg-motorcycle.jpg",
+        "https://catalog-management.s3.ap-south-1.amazonaws.com/htmobile1/tvs_apachertr1604v/images/exterior_tvs-apache-rtr160-4v_front-left-view_600x400.jpg"
       ],
       "name": "TVS Apache RTR 160",
       "model": "Apache RTR 160 4V",
       "type": "bike",
-      "availability": "available",
-      "manufacturingYear": 2023,
-      "rate": 700,
-      "status": "available",
-      "isRentedFlag": false,
-      "createdDate": "2024-01-01T00:00:00.000Z"
-    },
-    {
-      "id": "bike-004",
-      "photos": [
-        "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=300&fit=crop"
-      ],
-      "name": "Bajaj Pulsar NS200",
-      "model": "Pulsar NS200",
-      "type": "bike",
-      "availability": "available",
-      "manufacturingYear": 2022,
-      "rate": 750,
-      "status": "available",
-      "isRentedFlag": false,
-      "createdDate": "2024-01-01T00:00:00.000Z"
-    },
-    {
-      "id": "cbe8b1e1-7c13-42c8-8229-e3b79c32ebe4",
-      "photos": [
-        "data:image/jpeg;base64,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"
-      ],
-      "name": "Harley Davidson Sportster S 4.434 Reviews Write Review",
-      "model": "2024",
-      "type": "bike",
       "availability": "rented",
-      "manufacturingYear": 2025,
-      "rate": 4997,
+      "manufacturingYear": 2023,
+      "rate": 1700,
       "status": "rented",
       "isRentedFlag": true,
-      "createdDate": "2025-07-30T10:33:00.790Z",
+      "createdDate": "2024-01-01T00:00:00.000Z",
       "rentalInfo": {
         "customerName": "aniketbk",
         "customerNumber": "7634563788",
         "customerPAN": "TYSDF8879Y",
         "customerAadhar": "123462537485",
-        "fromDate": "2025-07-30",
-        "toDate": "2025-08-09",
+        "fromDate": "2025-07-31",
+        "toDate": "2025-08-21",
         "totalPaid": 0,
-        "totalDue": 49970
+        "totalDue": 35700
       }
+    },
+    {
+      "id": "bike-004",
+      "photos": [
+        "https://imgd.aeplcdn.com/1280x720/n/cw/ec/58025/pulsar-ns-right-side-view-9.png?isig=0",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPtYddB5I8U6WcVt4979iZfMYtqcJ1Q8rVuk56ocBohCqbnWZpjXZ-2i8kNTCQNNMsK3M&usqp=CAU"
+      ],
+      "name": "Bajaj Pulsar NS200",
+      "model": "Pulsar NS200",
+      "type": "bike",
+      "availability": "rented",
+      "manufacturingYear": 2022,
+      "rate": 750,
+      "status": "rented",
+      "isRentedFlag": true,
+      "createdDate": "2024-01-01T00:00:00.000Z",
+      "rentalInfo": {
+        "customerName": "customer1",
+        "customerNumber": "7642536477",
+        "customerPAN": "TESDF6678H",
+        "customerAadhar": "524363745467",
+        "fromDate": "2025-08-12",
+        "toDate": "2025-08-22",
+        "totalPaid": 0,
+        "totalDue": 7500
+      }
+    },
+    {
+      "id": "cbe8b1e1-7c13-42c8-8229-e3b79c32ebe4",
+      "photos": [
+        "https://img.autocarindia.com/ExtraImages/20210714012539_HD_S.jpg?w=700&c=1",
+        "https://images.ctfassets.net/5vy1mse9fkav/5J3isAGOIY4wwNpizLZhA3/0c717d403fdc5fc4dfb34694d055e51d/2025-sportster-s-gallery-1.jpg"
+      ],
+      "name": "Harley Davidson Sportster",
+      "model": "2024",
+      "type": "bike",
+      "availability": "available",
+      "manufacturingYear": 2025,
+      "rate": 4997,
+      "status": "available",
+      "isRentedFlag": false,
+      "createdDate": "2025-07-30T10:33:00.790Z"
+    },
+    {
+      "id": "73a6f06f-4532-473f-b0fd-3883b1e75eb1",
+      "photos": [
+        "https://imgd.aeplcdn.com/664x374/n/cw/ec/1/versions/--dlx-obd-2b1743781473451.jpg?q=80",
+        "https://imgd.aeplcdn.com/1056x594/n/t0hsnfb_1825029.jpg?q=80",
+        "https://imgd.aeplcdn.com/1056x594/n/wtesnfb_1825025.jpg?q=80"
+      ],
+      "name": "Honda CB350",
+      "model": "CB350 DLX Pro",
+      "type": "bike",
+      "availability": "available",
+      "manufacturingYear": 2025,
+      "rate": 4000,
+      "status": "available",
+      "isRentedFlag": false,
+      "createdDate": "2025-07-31T13:42:49.235Z"
     }
   ],
   "cars": [
     {
       "id": "car-001",
       "photos": [
-        "https://images.unsplash.com/photo-1549924231-f129b911e442?w=500&h=300&fit=crop",
-        "https://images.unsplash.com/photo-1502877338535-766e1452684a?w=500&h=300&fit=crop"
+        "https://www.autovista.in/assets/product_images/gallery/new-all-new-swift-front.jpg",
+        "https://imgd.aeplcdn.com/664x374/n/cw/ec/159099/swift-exterior-left-front-three-quarter-28.jpeg?isig=0&q=80"
       ],
       "name": "Maruti Suzuki Swift",
       "model": "Swift VXI",
@@ -118,8 +151,9 @@
     {
       "id": "car-002",
       "photos": [
-        "https://images.unsplash.com/photo-1550355291-bbee04a92027?w=500&h=300&fit=crop",
-        "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=500&h=300&fit=crop"
+        "https://stimg.cardekho.com/images/carexteriorimages/930x620/Hyundai/i20/11092/1753188849141/front-left-side-47.jpg",
+        "https://imgd.aeplcdn.com/1920x1080/n/cw/ec/158139/i20-n-line-exterior-right-front-three-quarter-15.jpeg?isig=0&q=80&q=80",
+        "https://cdnwp.dealerk.com/eed49ed7/uploads/sites/218/2024/07/hyundai-i20-n-line-alla-lupi-auto-a-pistoia-prato-e-firenze-nuovo-garantito-in-pronta-consegna-1024x567.png"
       ],
       "name": "Hyundai i20",
       "model": "i20 Sportz",
@@ -134,7 +168,10 @@
     {
       "id": "car-003",
       "photos": [
-        "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=500&h=300&fit=crop"
+        "https://stimg.cardekho.com/images/carexteriorimages/930x620/Tata/Nexon/9675/1751559838445/front-left-side-47.jpg?impolicy=resize&imwidth=420",
+        "https://imgd.aeplcdn.com/664x374/n/cw/ec/141867/nexon-exterior-right-front-three-quarter-75.jpeg?isig=0&q=80",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Tata_Nexon_Blue_Dual_Tone.jpg/960px-Tata_Nexon_Blue_Dual_Tone.jpg",
+        "https://www.mahindrafirstchoice.com/_next/image?url=https%3A%2F%2Fmedia.mahindrafirstchoice.com%2Flive_web_images%2Fusedcarsimg%2Fmfc%2F2820%2F620645%2Fcover_image-20241107151849.jpg&w=1200&q=75"
       ],
       "name": "Tata Nexon",
       "model": "Nexon XZ Plus",
@@ -149,7 +186,9 @@
     {
       "id": "car-004",
       "photos": [
-        "https://images.unsplash.com/photo-1562911791-c7a97b729ec5?w=500&h=300&fit=crop"
+        "https://imgd.aeplcdn.com/664x374/n/nzfaoua_1555237.jpg?q=80",
+        "https://imgd.aeplcdn.com/664x374/n/cw/ec/134287/city-exterior-right-front-three-quarter-76.jpeg?isig=0&q=80",
+        "https://ackodrive-assets.ackodrive.com/media/test_Y2Bxfn9.png"
       ],
       "name": "Honda City",
       "model": "City ZX CVT",

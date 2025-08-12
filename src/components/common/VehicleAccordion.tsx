@@ -18,7 +18,7 @@ const VehicleAccordion: React.FC<VehicleAccordionProps> = ({
   showMakeAvailableButton = false,
   sortBy = 'createdDate'
 }) => {
-  const { refreshProducts } = useAuth();
+  const { refreshProducts, hasPermission } = useAuth();
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [showRentModal, setShowRentModal] = useState<string | null>(null);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -241,8 +241,10 @@ const VehicleAccordion: React.FC<VehicleAccordionProps> = ({
                           e.stopPropagation();
                           handleMakeAvailable(vehicle.id);
                         }}
-                        disabled={actionLoading === vehicle.id}
+                        disabled={actionLoading === vehicle.id || !hasPermission('make_available')}
+                        title={!hasPermission('make_available') ? 'Admin access required' : ''}
                       >
+                        {!hasPermission('make_available') && <span className="lock-icon">🔒</span>}
                         {actionLoading === vehicle.id ? 'Processing...' : 'Make Available'}
                       </button>
                     )}
