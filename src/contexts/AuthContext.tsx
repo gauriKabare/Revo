@@ -1,16 +1,21 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { User, SessionData, ProductsResponse } from '../types';
+import { User, SessionData, ProductsResponse, AdminLoginData, AdminOTPData } from '../types';
 import { authAPI } from '../services/api';
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
+  isAdmin: boolean;
   products: ProductsResponse | null;
   sessionData: SessionData | null;
   login: (username: string, password: string) => Promise<boolean>;
+  adminLogin: (adminData: AdminLoginData) => Promise<{ success: boolean; requiresOTP?: boolean }>;
+  verifyAdminOTP: (otpData: AdminOTPData) => Promise<boolean>;
   logout: () => void;
   refreshProducts: () => Promise<void>;
   setProducts: (products: ProductsResponse) => void;
+  updateUser: (updatedUser: User) => void;
+  hasPermission: (permission: string) => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -32,6 +37,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [products, setProductsState] = useState<ProductsResponse | null>(null);
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   // Check for existing session on app load
   useEffect(() => {
@@ -40,16 +46,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const sessionDataString = sessionStorage.getItem('vehicleRentalSession');
         if (sessionDataString) {
           const parsedSession: SessionData = JSON.parse(sessionDataString);
-          setUser({
+          const userData: User = {
             id: parsedSession.userId,
             username: parsedSession.username,
             email: '',
+            firstName: '',
+            lastName: '',
             mobileNumber: '',
-            password: ''
-          });
+            role: (parsedSession as any).role || 'user',
+            createdAt: new Date().toISOString()
+          };
+          setUser(userData);
           setProductsState(parsedSession.products);
           setSessionData(parsedSession);
           setIsAuthenticated(true);
+          setIsAdmin(userData.role === 'admin');
         }
       } catch (error) {
         console.error('Error checking existing session:', error);
@@ -65,6 +76,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await authAPI.signIn({ username, password });
       
       if (response.status === 'success') {
+        // Extract JWT token from login response
+        const token = response.data?.token;
+        
         // Fetch products after successful login
         const productsResponse = await authAPI.getProducts();
         
@@ -73,14 +87,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             id: username, // Using username as ID for now
             username,
             email: '',
+            firstName: '',
+            lastName: '',
             mobileNumber: '',
-            password: ''
+            role: 'user',
+            createdAt: new Date().toISOString()
           };
 
           const newSessionData: SessionData = {
             userId: username,
             username,
-            products: productsResponse?.data || { bikes: [], cars: [] }
+            products: productsResponse?.data || { bikes: [], cars: [] },
+            token: token // Store JWT token
           };
 
           // Save to session storage
@@ -90,6 +108,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           setProductsState(productsResponse?.data || null);
           setSessionData(newSessionData);
           setIsAuthenticated(true);
+          setIsAdmin(false);
           
           return true;
         }
@@ -98,6 +117,80 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return false;
     } catch (error) {
       console.error('Login error:', error);
+      return false;
+    }
+  };
+
+  const adminLogin = async (adminData: AdminLoginData): Promise<{ success: boolean; requiresOTP?: boolean }> => {
+    try {
+      // First phase: username/password authentication
+      if (!adminData.otp) {
+        const response = await authAPI.adminSignIn({ username: adminData.username, password: adminData.password });
+        
+        if (response.status === 'success') {
+          return { success: true, requiresOTP: true };
+        }
+        return { success: false };
+      }
+      
+      // Second phase: OTP verification and full login
+      const otpResponse = await authAPI.verifyAdminOTP({ username: adminData.username, otp: adminData.otp });
+      
+      if (otpResponse.status === 'success') {
+        // Extract JWT token from admin OTP response
+        const token = otpResponse.data?.token;
+        
+        // Fetch products after successful admin login
+        const productsResponse = await authAPI.getProducts();
+        
+        if (productsResponse.status === 'success') {
+          const userData: User = {
+            id: adminData.username,
+            username: adminData.username,
+            email: '',
+            firstName: '',
+            lastName: '',
+            mobileNumber: '',
+            role: 'admin',
+            createdAt: new Date().toISOString()
+          };
+
+          const newSessionData: SessionData = {
+            userId: adminData.username,
+            username: adminData.username,
+            products: productsResponse?.data || { bikes: [], cars: [] },
+            token: token // Store JWT token
+          };
+
+          // Add role to session data
+          (newSessionData as any).role = 'admin';
+
+          // Save to session storage
+          sessionStorage.setItem('vehicleRentalSession', JSON.stringify(newSessionData));
+          
+          setUser(userData);
+          setProductsState(productsResponse?.data || null);
+          setSessionData(newSessionData);
+          setIsAuthenticated(true);
+          setIsAdmin(true);
+          
+          return { success: true };
+        }
+      }
+      
+      return { success: false };
+    } catch (error) {
+      console.error('Admin login error:', error);
+      return { success: false };
+    }
+  };
+
+  const verifyAdminOTP = async (otpData: AdminOTPData): Promise<boolean> => {
+    try {
+      const response = await authAPI.verifyAdminOTP(otpData);
+      return response.status === 'success';
+    } catch (error) {
+      console.error('Admin OTP verification error:', error);
       return false;
     }
   };
@@ -116,6 +209,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setProductsState(null);
       setSessionData(null);
       setIsAuthenticated(false);
+      setIsAdmin(false);
+    }
+  };
+
+  const hasPermission = (permission: string): boolean => {
+    if (!user) return false;
+    
+    switch (permission) {
+      case 'admin':
+        return user.role === 'admin';
+      case 'make_available':
+        return user.role === 'admin';
+      case 'rental_history':
+        return user.role === 'admin';
+      default:
+        return true; // Regular user permissions
     }
   };
 
@@ -168,15 +277,37 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, []);
 
+  const updateUser = useCallback((updatedUser: User) => {
+    setUser(updatedUser);
+    
+    // Update session storage with new user data (preserve token and other data)
+    const existingSession = sessionStorage.getItem('vehicleRentalSession');
+    if (existingSession) {
+      const currentSessionData = JSON.parse(existingSession);
+      const updatedSessionData = {
+        ...currentSessionData, // Preserve all existing data including token
+        username: updatedUser.username,
+        userId: updatedUser.id
+      };
+      setSessionData(updatedSessionData);
+      sessionStorage.setItem('vehicleRentalSession', JSON.stringify(updatedSessionData));
+    }
+  }, []);
+
   const value: AuthContextType = {
     user,
     isAuthenticated,
+    isAdmin,
     products,
     sessionData,
     login,
+    adminLogin,
+    verifyAdminOTP,
     logout,
     refreshProducts,
-    setProducts
+    setProducts,
+    updateUser,
+    hasPermission
   };
 
   return (

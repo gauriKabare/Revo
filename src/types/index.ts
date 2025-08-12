@@ -3,9 +3,12 @@ export interface User {
   id: string;
   username: string;
   email: string;
+  firstName: string;
+  lastName: string;
   mobileNumber: string;
-  password: string;
-  profilePhoto?: string;
+  profilePhoto?: string; // Optional profile photo
+  role: 'user' | 'admin'; // Add role field
+  createdAt: string;
 }
 
 export interface LoginCredentials {
@@ -65,6 +68,8 @@ export interface OwnerResponse {
   profilePhoto?: string;
   contactNumber: string;
   email: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 // Form Types
@@ -131,4 +136,34 @@ export interface SessionData {
   userId: string;
   username: string;
   products: ProductsResponse;
+  token?: string;
+} 
+
+// Admin Types
+export interface AdminLoginData {
+  username: string;
+  password: string;
+  otp?: string;
+}
+
+export interface AdminOTPData {
+  username: string;
+  otp: string;
+}
+
+// Rental History Types
+export interface RentalHistoryRecord {
+  id: string;
+  userId: string;
+  userName: string;
+  vehicleId: string;
+  vehicleName: string;
+  vehicleType: 'bike' | 'car';
+  vehicleModel: string;
+  startDate: string;
+  endDate: string;
+  returnDate?: string;
+  rentAmount: number;
+  status: 'active' | 'completed' | 'overdue';
+  createdAt: string;
 } 

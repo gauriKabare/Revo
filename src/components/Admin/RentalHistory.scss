@@ -1,0 +1,461 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.rental-history-container {
+  padding: $spacing-xl;
+  min-height: 100vh;
+  background: $background-color;
+}
+
+.rental-history-header {
+  margin-bottom: $spacing-2xl;
+  
+  .header-content {
+    text-align: center;
+    margin-bottom: $spacing-xl;
+
+    h1 {
+      color: $primary-color;
+      font-size: $font-size-4xl;
+      font-weight: $font-weight-bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: $spacing-sm;
+      
+      &::after {
+        content: '';
+        display: block;
+        width: 100px;
+        height: 3px;
+        background: $primary-gradient;
+        margin: $spacing-md auto;
+        border-radius: 2px;
+      }
+    }
+
+    p {
+      color: $text-secondary;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-medium;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: $spacing-lg;
+    margin-top: $spacing-xl;
+
+    .stat-item {
+      background: $glass-background;
+      border: 1px solid $glass-border;
+      border-radius: $border-radius-lg;
+      padding: $spacing-lg;
+      text-align: center;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: $shadow-lg;
+        border-color: $primary-color;
+      }
+
+      .stat-number {
+        display: block;
+        font-size: $font-size-3xl;
+        font-weight: $font-weight-bold;
+        color: $primary-color;
+        margin-bottom: $spacing-xs;
+      }
+
+      .stat-label {
+        display: block;
+        font-size: $font-size-sm;
+        color: $text-secondary;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: $font-weight-medium;
+      }
+    }
+  }
+}
+
+.filter-controls {
+  margin-bottom: $spacing-2xl;
+
+  .filter-tabs {
+    display: flex;
+    gap: $spacing-sm;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .filter-tab {
+      background: transparent;
+      border: 1px solid $glass-border;
+      color: $text-secondary;
+      padding: $spacing-sm $spacing-lg;
+      border-radius: $border-radius-md;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+
+      .count {
+        background: rgba(42, 42, 42, 0.8);
+        color: $text-primary;
+        padding: 2px 6px;
+        border-radius: $border-radius-sm;
+        font-size: $font-size-xs;
+        font-weight: $font-weight-bold;
+        min-width: 20px;
+        text-align: center;
+      }
+
+      &:hover:not(.active) {
+        border-color: $primary-color;
+        color: $primary-color;
+        background: rgba(168, 85, 247, 0.1);
+        transform: translateY(-2px);
+      }
+
+      &.active {
+        background: $primary-color;
+        color: white;
+        border-color: $primary-color;
+        box-shadow: $shadow-md;
+        transform: translateY(-2px);
+
+        .count {
+          background: rgba(0, 0, 0, 0.3);
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.loading-state, .error-state, .empty-state {
+  background: $glass-background;
+  border: 1px solid $glass-border;
+  border-radius: $border-radius-lg;
+  text-align: center;
+  padding: $spacing-2xl;
+  margin: $spacing-xl auto;
+  max-width: 500px;
+  backdrop-filter: blur(10px);
+
+  .loader {
+    width: 50px;
+    height: 50px;
+    border: 3px solid $glass-border;
+    border-top: 3px solid $primary-color;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto $spacing-lg;
+  }
+
+  h3 {
+    color: $text-primary;
+    font-size: $font-size-xl;
+    margin-bottom: $spacing-md;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: $font-weight-bold;
+  }
+
+  p {
+    color: $text-secondary;
+    margin-bottom: $spacing-lg;
+  }
+}
+
+.access-denied {
+  background: $glass-background;
+  border: 2px solid $error-color;
+  border-radius: $border-radius-lg;
+  text-align: center;
+  padding: $spacing-2xl;
+  margin: $spacing-xl auto;
+  max-width: 500px;
+  box-shadow: $shadow-lg, 0 0 20px rgba(239, 68, 68, 0.2);
+  backdrop-filter: blur(10px);
+
+  h2 {
+    color: $error-color;
+    font-size: $font-size-2xl;
+    margin-bottom: $spacing-md;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: $font-weight-bold;
+  }
+
+  p {
+    color: $text-secondary;
+  }
+}
+
+.rental-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  
+  .rental-card {
+    background: $glass-background;
+    border: 1px solid $glass-border;
+    border-radius: $border-radius-lg;
+    padding: $spacing-xl;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    animation: fadeInUp 0.5s ease-out;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: $shadow-xl;
+      border-color: $primary-color;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: $spacing-lg;
+      padding-bottom: $spacing-md;
+      border-bottom: 1px solid $glass-border;
+
+      .rental-id {
+        font-family: 'Courier New', monospace;
+        font-size: $font-size-lg;
+        font-weight: $font-weight-bold;
+        color: $text-primary;
+        letter-spacing: 1px;
+      }
+
+      .status-badge {
+        padding: $spacing-xs $spacing-sm;
+        border-radius: $border-radius-md;
+        font-size: $font-size-xs;
+        font-weight: $font-weight-bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+
+        &.status-active {
+          background: rgba(59, 130, 246, 0.1);
+          color: $info-color;
+          border: 1px solid $info-color;
+        }
+
+        &.status-completed {
+          background: rgba(16, 185, 129, 0.1);
+          color: $success-color;
+          border: 1px solid $success-color;
+        }
+
+        &.status-overdue {
+          background: rgba(239, 68, 68, 0.1);
+          color: $error-color;
+          border: 1px solid $error-color;
+        }
+      }
+    }
+
+    .card-content {
+      .rental-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: $spacing-lg;
+        margin-bottom: $spacing-lg;
+
+        .info-section {
+          h4 {
+            font-size: $font-size-sm;
+            font-weight: $font-weight-bold;
+            color: $text-secondary;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: $spacing-xs;
+          }
+
+          .customer-name, .vehicle-name, .duration, .rent-amount {
+            font-size: $font-size-lg;
+            font-weight: $font-weight-bold;
+            color: $text-primary;
+            margin-bottom: $spacing-xs;
+          }
+
+          .rent-amount {
+            color: $success-color;
+            font-family: 'Courier New', monospace;
+            font-size: $font-size-xl;
+          }
+
+          .user-id, .vehicle-details, .date-range, .amount-label {
+            font-size: $font-size-sm;
+            color: $text-secondary;
+            font-family: 'Courier New', monospace;
+          }
+        }
+      }
+
+      .return-info {
+        padding: $spacing-md;
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        border-radius: $border-radius-md;
+        margin-top: $spacing-lg;
+
+        h4 {
+          font-size: $font-size-sm;
+          font-weight: $font-weight-bold;
+          color: $success-color;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          margin-bottom: $spacing-xs;
+        }
+
+        p {
+          margin: 0;
+          color: $text-primary;
+          font-family: 'Courier New', monospace;
+        }
+
+        .overdue-warning {
+          color: $error-color;
+          font-weight: $font-weight-bold;
+          text-transform: uppercase;
+          font-size: $font-size-xs;
+          letter-spacing: 1px;
+          margin-top: $spacing-xs;
+        }
+      }
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: $spacing-lg;
+      padding-top: $spacing-md;
+      border-top: 1px solid $glass-border;
+
+      .created-date {
+        font-size: $font-size-xs;
+        color: $text-secondary;
+        font-family: 'Courier New', monospace;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .actions {
+        display: flex;
+        gap: $spacing-sm;
+
+        .btn {
+          padding: $spacing-xs $spacing-sm;
+          font-size: $font-size-xs;
+          border-radius: $border-radius-md;
+
+          &.btn-sm {
+            min-width: auto;
+            height: auto;
+          }
+
+          &.btn-warning {
+            background: $warning-color;
+            color: white;
+            border-color: $warning-color;
+
+            &:hover {
+              opacity: 0.9;
+              transform: translateY(-1px);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Responsive design
+@media (max-width: $breakpoint-lg) {
+  .rental-history-container {
+    padding: $spacing-lg;
+  }
+
+  .rental-history-header {
+    .stats-bar {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .rental-cards-container {
+    .rental-card {
+      .card-content {
+        .rental-info {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      .card-footer {
+        flex-direction: column;
+        gap: $spacing-md;
+        align-items: flex-start;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .rental-history-header {
+    .stats-bar {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .filter-controls {
+    .filter-tabs {
+      justify-content: stretch;
+      
+      .filter-tab {
+        flex: 1;
+        justify-content: center;
+      }
+    }
+  }
+
+  .rental-cards-container {
+    .rental-card {
+      padding: $spacing-lg;
+
+      .card-content {
+        .rental-info {
+          grid-template-columns: 1fr;
+        }
+      }
+    }
+  }
+} 

@@ -172,10 +172,11 @@
       }
 
       .rental-info-section {
-        background: #f8f9fa;
+        background: $glass-background;
         padding: $spacing-xl;
         border-radius: $border-radius-lg;
-        border: 1px solid #e9ecef;
+        border: 1px solid $glass-border;
+        backdrop-filter: blur(10px);
 
         h3 {
           margin: 0 0 $spacing-lg 0;
@@ -227,9 +228,10 @@
                 color: $text-primary;
                 font-weight: $font-weight-medium;
                 padding: $spacing-sm;
-                background: white;
+                background: rgba(42, 42, 42, 0.6);
                 border-radius: $border-radius-sm;
-                border: 1px solid #e9ecef;
+                border: 1px solid $glass-border;
+                backdrop-filter: blur(5px);
               }
 
               .editable-field {
@@ -238,7 +240,8 @@
 
                 &:hover {
                   border-color: $primary-color;
-                  background: rgba($primary-color, 0.02);
+                  background: rgba(168, 85, 247, 0.1);
+                  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
                 }
               }
 
@@ -276,25 +279,47 @@
             }
 
             &.btn-outline {
-              background: white;
-              color: $text-secondary;
-              border: 1px solid #ddd;
+              background: transparent;
+              color: $text-primary;
+              border: 1px solid $glass-border;
 
               &:hover:not(:disabled) {
-                background: #f8f9fa;
+                background: rgba(168, 85, 247, 0.1);
                 border-color: $primary-color;
                 color: $primary-color;
+                box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+                transform: translateY(-2px);
               }
             }
 
             &.btn-success {
               background: $success-color;
               color: white;
+              display: flex;
+              align-items: center;
+              gap: $spacing-xs;
+              justify-content: center;
+
+              .lock-icon {
+                font-size: $font-size-sm;
+                opacity: 0.8;
+              }
 
               &:hover:not(:disabled) {
-                background: darken($success-color, 10%);
-                transform: translateY(-1px);
-                box-shadow: $shadow-md;
+                background: lighten($success-color, 10%);
+                transform: translateY(-2px);
+                box-shadow: $shadow-lg;
+              }
+
+              &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                
+                &:hover {
+                  transform: none;
+                  box-shadow: none;
+                  background: $success-color;
+                }
               }
             }
           }

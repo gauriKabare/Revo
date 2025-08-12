@@ -246,12 +246,32 @@
               &.btn-success {
                 @include button-base;
                 background: $success-color;
-                color: $text-primary;
+                color: $background-color;
+                display: flex;
+                align-items: center;
+                gap: $spacing-xs;
+                justify-content: center;
+
+                .lock-icon {
+                  font-size: $font-size-sm;
+                  opacity: 0.8;
+                }
 
                 &:hover:not(:disabled) {
-                  background: darken($success-color, 10%);
-                  transform: translateY(-1px);
-                  box-shadow: $shadow-md;
+                  background: lighten($success-color, 10%);
+                  transform: translateY(-2px);
+                  box-shadow: $shadow-lg;
+                }
+
+                &:disabled {
+                  opacity: 0.5;
+                  cursor: not-allowed;
+                  
+                  &:hover {
+                    transform: none;
+                    box-shadow: none;
+                    background: $success-color;
+                  }
                 }
               }
             }

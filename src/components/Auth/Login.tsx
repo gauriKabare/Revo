@@ -151,6 +151,21 @@ const Login: React.FC = () => {
         <div className="login-card">
           {/* Logo Section */}
           <div className="login-header">
+            <button 
+              className="admin-login-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Admin button clicked!');
+                navigate('/admin-login');
+              }}
+              type="button"
+              title="Admin Login"
+              style={{ position: 'relative', zIndex: 999 }}
+            >
+              <span className="admin-icon">🔐</span>
+              <span className="admin-text">Admin</span>
+            </button>
             <RevoLogo size="lg" animated={true} />
             <div className="header-divider"></div>
             <p className="login-subtitle">
