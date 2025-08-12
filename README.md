@@ -121,12 +121,12 @@ A modern, full-stack vehicle rental management platform featuring **clean, minim
 
 #### **👨‍💼 Admin Access**
 - **Username**: `admin`
-- **Password**: `admin123`
+- **Password**: `Admin@123`
 - **OTP**: *Generated dynamically (displayed in UI for testing)*
 
 #### **👤 Test User**
 - **Username**: `testuser`
-- **Password**: `password123`
+- **Password**: `Test@123`
 
 #### **🔄 Additional Test Users**
 You can create new users through the registration system or use the existing users in `backend/data/users.json`
